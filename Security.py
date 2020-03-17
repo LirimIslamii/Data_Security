@@ -1,34 +1,83 @@
-import argparse
+package lira;
+import java.util.Scanner;
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-encode','--text',type=str, required=True ,help='Encode String')
-args = parser.parse_args()
+public class liraa {
+	static String morseEncode(char x)  
+    { 
+       
+        switch (x)  
+        { 
+            case 'a': 
+                return ".-"; 
+            case 'b': 
+                return "-..."; 
+            case 'c': 
+                return "-.-."; 
+            case 'd': 
+                return "-.."; 
+            case 'e': 
+                return "."; 
+            case 'f': 
+                return "..-."; 
+            case 'g': 
+                return "--."; 
+            case 'h': 
+                return "...."; 
+            case 'i': 
+                return ".."; 
+            case 'j': 
+                return ".---"; 
+            case 'k': 
+                return "-.-"; 
+            case 'l': 
+                return ".-.."; 
+            case 'm': 
+                return "--"; 
+            case 'n': 
+                return "-."; 
+            case 'o': 
+                return "---"; 
+            case 'p': 
+                return ".--."; 
+            case 'q': 
+                return "--.-"; 
+            case 'r': 
+                return ".-."; 
+            case 's': 
+                return "..."; 
+            case 't': 
+                return "-"; 
+            case 'u': 
+                return "..-"; 
+            case 'v': 
+                return "...-"; 
+            case 'w': 
+                return ".--"; 
+            case 'x': 
+                return "-..-"; 
+            case 'y': 
+                return "-.--"; 
+            // for space 
+            case 'z': 
+                return "--.."; 
+        } 
+        return ""; 
+    } 
+	static void morseCode(String s)  
+    { 
+        // character by character print  
+        // Morse code 
+        for (int i = 0;i<s.length(); i++) 
+            System.out.print(morseEncode(s.charAt(i))); 
+            System.out.println(); 
+    } 
+	
+	
+	public static void main(String[] args) {
+		System.out.print("$ds morse-code encode ");
+		Scanner in = new Scanner(System.in);
+		String input = in.nextLine().toLowerCase();
+		morseCode(input);
+	}
 
-def encrypt(text):
-    code = {'A':'.-', 'B':'-...', 
-            'C':'-.-.', 'D':'-..', 'E':'.', 
-            'F':'..-.', 'G':'--.', 'H':'....', 
-            'I':'..', 'J':'.---', 'K':'-.-', 
-            'L':'.-..', 'M':'--', 'N':'-.', 
-            'O':'---', 'P':'.--.', 'Q':'--.-', 
-            'R':'.-.', 'S':'...', 'T':'-', 
-            'U':'..-', 'V':'...-', 'W':'.--', 
-            'X':'-..-', 'Y':'-.--', 'Z':'--..', 
-            '1':'.----', '2':'..---', '3':'...--', 
-            '4':'....-', '5':'.....', '6':'-....', 
-            '7':'--...', '8':'---..', '9':'----.', 
-            '0':'-----', ', ':'--..--', '.':'.-.-.-', 
-            '?':'..--..', '/':'-..-.', '-':'-....-', 
-			'(':'-.--.', ')':'-.--.-',  ' ':' '
-            }
-            
-    morse_code = ""
-
-    for x in text:		
-        	morse_code += code[x.upper()]
- 															
-    return morse_code
-
-
-if __name__ == '__main__':
-	print(encrypt(args.text))
+}
