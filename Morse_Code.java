@@ -19,7 +19,7 @@ static String[] MORSE = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....
             MORSE_TO_ALPHA.put(MORSE[i], ALPHA[i]);
         }
     }
-public static String encode(String eCode) {
+public static String decode(String eCode) {
         StringBuilder builder = new StringBuilder();
         String[] words = eCode.trim().split("   ");
 
@@ -35,7 +35,7 @@ public static String encode(String eCode) {
         return builder.toString().toUpperCase();
     }
 
-public static String decode(String dCode) {
+public static String encode(String dCode) {
         StringBuilder builder = new StringBuilder();
         String[] words = dCode.trim().split(" ");
 
