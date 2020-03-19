@@ -30,6 +30,8 @@ Përshembull,
       ✸ java morse-code encode <text>
       ✸ java morse-code decode <text>
 
+![image](https://user-images.githubusercontent.com/61246827/77023092-a94d2f80-698b-11ea-89f3-c1ae7598c849.png)
+
 ➤ Për funksionin Tap Code:
 
       ✸ java tap-code encode <text>
