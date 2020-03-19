@@ -27,12 +27,22 @@ Përshembull,
 
 ➤ Për funksionin Morse Code:
 
-      ✸ java morse-code encode <text>
-      ✸ java morse-code decode <text>
+      ✸ java Main morse-code encode <text>
+      ✸ java Main morse-code decode <text>
 
 ![image](https://user-images.githubusercontent.com/61246827/77023092-a94d2f80-698b-11ea-89f3-c1ae7598c849.png)
 
 ➤ Për funksionin Tap Code:
 
-      ✸ java tap-code encode <text>
-      ✸ java tap-code decode <text>
+      ✸ java Main tap-code encode <text>
+      ✸ java Main tap-code decode <text>
+
+![image](https://user-images.githubusercontent.com/61246827/77023251-0ba63000-698c-11ea-8a27-4b29d57fd471.png)
+
+
+REFERENCAT:
+
+ https://www.ssaurel.com/blog/learn-to-create-a-morse-code-converter-app-for-android/ (Ketu jemi bazuar për funksionin Morse)
+
+https://www.vogella.com/tutorials/JavaRegularExpressions/article.html (Ketu jemi orientuar për karaktere)
+
