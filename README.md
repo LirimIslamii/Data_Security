@@ -24,9 +24,13 @@ HAPI 2:
 Përshembull, 
 
 ✓ Për funksionin Morse Code:
+
       ✸ java morse-code encode <text>
       ✸ java morse-code decode <text>
+
 ✓ Për funksionin Tap Code:
       ✸ java tap-code encode <text>
       ✸ java tap-code decode <text>
+
+<img width="806" alt="Morse" src="https://user-images.githubusercontent.com/61246827/77022345-acdfb700-6989-11ea-9002-b56d5907969a.png">
 
