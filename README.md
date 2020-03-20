@@ -17,7 +17,7 @@ Në këtë program janë implementuar tre funksione. Realizimin e këtyre funksi
 
 ❂ Funksioni FourSquare Code:
 
-  1. Encrypt(Enkripton Alfabetin Latin në 4 tabela 5x5 duke përdorur disa rregulla ne Kodin FourSquare)
+  1. Encrypt(Enkripton Alfabetin Latin në Kodin FourSquare në 4 tabela 5x5 duke përdorur disa rregulla)
   2. Decrypt(Dekripton Kodin FourSquare në Alfabet Latin)
 
 
