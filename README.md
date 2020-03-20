@@ -53,6 +53,8 @@ Ekzekutimi i Programit :
       ✸ java Main four-square encrypt <key1> <key2> <text>
       ✸ java Main four-square decrypt <key1> <key2> <text> 
 
+![image](https://user-images.githubusercontent.com/61246827/77173024-2d540400-6abf-11ea-8676-91d826613755.png)
+
 
 REFERENCAT:
 
