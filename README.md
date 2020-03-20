@@ -8,10 +8,11 @@ Në këtë program janë implementuar tre funksione. Realizimin e këtyre funksi
 
   1. Encode(Konverton Alfabetin Latin ne kodin Morse)
   2. Decode(Kodin Morse e konverton ne Alfabetin Latin)
+  3. Beep(Shpreh në tinguj Tekstin e Konvertuar)
 
 ❂ Funksioni Tap Code:
 
-  1. Encode(Konverton Alfabetin Latin ne kodin Tap e organizuar në një tabelë 5x5 duke trokitur aq herë sa e ka rreshtin dhe        aq herë sa e ka kolonën)
+  1. Encode(Konverton Alfabetin Latin ne kodin Tap që organizohet në një tabelë 5x5 duke trokitur në shkronjën ,aq herë sa e ka rreshtin dhe aq herë sa e ka kolonën)
   2. Decode(Konverton Kodin Tap ne Alfabetin Latin duke përdorur këtë tabelë)
 
 ❂ Funksioni FourSquare Code:
