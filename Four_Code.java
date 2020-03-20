@@ -67,7 +67,7 @@ public class Four_Code {
 
 	    private static String[] split(String plaintext) {
 	        if (plaintext.length() % 2 != 0) {
-	            plaintext = plaintext + " ";
+	            plaintext = plaintext + "X";      // "X" Padding Character!
 	        }
 	        String[] pairs = new String[plaintext.length() / 2];
 	        int count = 0;
@@ -78,7 +78,7 @@ public class Four_Code {
 	        return pairs;
 	    }
 
-	    public static String encrypt( String keyword1, String keyword2,String plaintext) {
+	    public static String encrypt(String keyword1, String keyword2,String plaintext) {
 	        plaintext = clean(plaintext);
 	        String[] pairs = split(plaintext);
 	        char[][] keytable1 = generateKeyTable(keyword1);
@@ -131,4 +131,5 @@ public class Four_Code {
 	        }
 	        return plaintext.toString();
 	    }
+
 }
