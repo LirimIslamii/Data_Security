@@ -37,7 +37,7 @@ Ekzekutimi i Programit :
       ✸ java Main morse-code encode <text>
       ✸ java Main morse-code decode <text>
 
-![image](https://user-images.githubusercontent.com/61246827/77023092-a94d2f80-698b-11ea-89f3-c1ae7598c849.png)
+<img width="733" alt="Morse" src="https://user-images.githubusercontent.com/61246827/77166684-ff69c200-6ab4-11ea-94c8-08b0dc5d6f46.png">
 
 ➤ Për funksionin Tap Code:
 
