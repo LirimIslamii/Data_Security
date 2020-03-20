@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class Tap_Code {
 
-    public static Map<String, Character> ENCODE = new HashMap<>(); // ENKODIMI BY LIRIM ISLAMI
+    public static Map<String, Character> ENCODE = new HashMap<>(); // ENCODED BY LIRIM ISLAMI
 
     static {
         //ENCODE HashMap
@@ -32,7 +32,7 @@ public class Tap_Code {
         ENCODE.put("..... ...", 'x');
         ENCODE.put("..... ....", 'y');
         ENCODE.put("..... .....", 'z');
-        ENCODE.put(" ", '/');
+        ENCODE.put(" ", ' ');
     }
 
  public static String TapCodeEncode(char x)  
@@ -92,7 +92,7 @@ public class Tap_Code {
 		case 'z': 
 		    return "..... .....  "; 
 		} 
-		return " / "; 
+		return ""; 
 		} 
 		
 		public static void encode(String e)  
