@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class Tap_Code {
 
-    public static Map<String, Character> ENCODE = new HashMap<>(); // ENCODED BY LIRIM ISLAMI
+    public static Map<String, Character> ENCODE = new HashMap<>();
 
     static {
         //ENCODE HashMap
