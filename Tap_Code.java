@@ -3,36 +3,36 @@ import java.util.Map;
 
 public class Tap_Code {
 
-    public static Map<String, Character> ENCODE = new HashMap<>();
+    public static Map<String, Character> DECODE = new HashMap<>();
 
     static {
         //ENCODE HashMap
-        ENCODE.put(". .", 'a');
-        ENCODE.put(". ..", 'b');
-        ENCODE.put(". ...", 'c');
-        ENCODE.put(". ....", 'd');
-        ENCODE.put(". .....", 'e');
-        ENCODE.put(".. .", 'f');
-        ENCODE.put(".. ..", 'g');
-        ENCODE.put(".. ...", 'h');
-        ENCODE.put(".. ....", 'i');
-        ENCODE.put(".. .....", 'j');
-        ENCODE.put("... .", 'l');
-        ENCODE.put("... ..", 'm');
-        ENCODE.put("... ...", 'n');
-        ENCODE.put("... ....", 'o');
-        ENCODE.put("... .....", 'p');
-        ENCODE.put(".... .", 'q');
-        ENCODE.put(".... ..", 'r');
-        ENCODE.put(".... ...", 's');
-        ENCODE.put(".... ....", 't');
-        ENCODE.put(".... .....", 'u');
-        ENCODE.put("..... .", 'v');
-        ENCODE.put("..... ..", 'w');
-        ENCODE.put("..... ...", 'x');
-        ENCODE.put("..... ....", 'y');
-        ENCODE.put("..... .....", 'z');
-        ENCODE.put(" ", ' ');
+        DECODE.put(". .", 'a');
+        DECODE.put(". ..", 'b');
+        DECODE.put(". ...", 'c');
+        DECODE.put(". ....", 'd');
+        DECODE.put(". .....", 'e');
+        DECODE.put(".. .", 'f');
+        DECODE.put(".. ..", 'g');
+        DECODE.put(".. ...", 'h');
+        DECODE.put(".. ....", 'i');
+        DECODE.put(".. .....", 'j');
+        DECODE.put("... .", 'l');
+        DECODE.put("... ..", 'm');
+        DECODE.put("... ...", 'n');
+        DECODE.put("... ....", 'o');
+        DECODE.put("... .....", 'p');
+        DECODE.put(".... .", 'q');
+        DECODE.put(".... ..", 'r');
+        DECODE.put(".... ...", 's');
+        DECODE.put(".... ....", 't');
+        DECODE.put(".... .....", 'u');
+        DECODE.put("..... .", 'v');
+        DECODE.put("..... ..", 'w');
+        DECODE.put("..... ...", 'x');
+        DECODE.put("..... ....", 'y');
+        DECODE.put("..... .....", 'z');
+        DECODE.put(" ", ' ');
     }
 
  public static String TapCodeEncode(char x)  
@@ -107,7 +107,7 @@ public class Tap_Code {
         for (String word : words) {
             String[] letters = word.split("  ");
             for (String letter : letters) {
-                encoded.append(ENCODE.get(letter));
+                encoded.append(DECODE.get(letter));
             }
         }
         System.out.println(encoded);
