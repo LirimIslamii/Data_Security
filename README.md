@@ -3,6 +3,7 @@
 Ky është Projekti në lëndën Siguria e të dhënave!
 
 Në këtë program janë implementuar tre funksione. Realizimin e këtyre funksioneve e kemi bërë me gjuhën programuese Java!
+Kuptohet që të tre kemi punuar ne këtë projekt!
 
 ❂ Funksioni Morse Code:
 
