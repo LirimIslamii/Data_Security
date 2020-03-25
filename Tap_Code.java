@@ -102,15 +102,15 @@ public class Tap_Code {
 				System.out.println(); 
 		}
     public static String decode(String eMorse) {
-        StringBuilder encoded = new StringBuilder();
+        StringBuilder decoded = new StringBuilder();
         String[] words = eMorse.trim().split(" ",1);
         for (String word : words) {
             String[] letters = word.split("  ");
             for (String letter : letters) {
-                encoded.append(DECODE.get(letter));
+                decoded.append(DECODE.get(letter));
             }
         }
-        System.out.println(encoded);
-        return encoded.toString().toUpperCase();
+        System.out.println(decoded);
+        return decoded.toString().toUpperCase();
     }
 }
