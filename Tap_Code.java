@@ -101,9 +101,9 @@ public class Tap_Code {
 				System.out.print(TapCodeEncode(e.charAt(i))); 
 				System.out.println(); 
 		}
-    public static String decode(String eMorse) {
+    public static String decode(String tap) {
         StringBuilder decoded = new StringBuilder();
-        String[] words = eMorse.trim().split(" ",1);
+        String[] words = tap.trim().split(" ",1);
         for (String word : words) {
             String[] letters = word.split("  ");
             for (String letter : letters) {
