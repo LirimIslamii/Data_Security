@@ -13,7 +13,7 @@ public class Main {
    	    if(args.length == 0 || args.length > 5 || args.length < 3){
 
 			System.out.println("\n\t\tProgrami pranon deri ne 5 argumente!\n");
-            System.out.println("\t\t\tPerdorimi i Programit\n\n1.Per Kodin Morse shtyp -> morse-code encode <text> ose decode <text>\n" + "~Per Beep shtyp -> morse-code --audio <text>\n"+ "2.Per Kodin Tap shtyp -> tap-code encode <text> ose decode <text>" + "3.Per Kodin FourSquare shtyp -> four-square encrypt <key1> <key2> <text> ose \ndecrypt <key1> <key2> <text>");
+            System.out.println("\t\t\tPerdorimi i Programit\n\n1.Per Kodin Morse shtyp -> morse-code encode | decode <text>\n" + "~Per Beep shtyp -> morse-code --audio <text>\n"+ "2.Per Kodin Tap shtyp -> tap-code encode | decode <text>" + "3.Per Kodin FourSquare shtyp -> four-square encrypt | decrypt <key1> <key2> <text>");
 				System.exit(0);
 			}
 			String text = args[2];
