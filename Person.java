@@ -1,6 +1,4 @@
-package rsaexample;
-
-public class Person {
+public class Person{
 	private String Modulus;
 	private String Exponent;
 	private String P;
@@ -23,6 +21,10 @@ public Person(String Modulus, String Exponent, String P, String Q, String DP, St
 	this.DQ = DQ;
 	this.InverseQ = InverseQ;
 	this.D = D;
+}
+public Person(String Modulus, String Exponent) {
+	this.Modulus = Modulus;
+	this.Exponent = Exponent;
 }
 
 public String getModulus() {
