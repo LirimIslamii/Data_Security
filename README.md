@@ -2,6 +2,8 @@
 # Data_Security
 Ky është Projekti në lëndën Siguria e të dhënave!
 
+Faza e pare
+
 Në këtë program janë implementuar tre funksione. Realizimin e këtyre funksioneve e kemi bërë me gjuhën programuese Java!
 Kuptohet që të tre kemi punuar ne këtë projekt!
 
@@ -65,6 +67,6 @@ https://www.vogella.com/tutorials/JavaRegularExpressions/article.html (Këtu jem
 
 https://forum.moparisthebest.com/t/foursquare-cipher/409572.html?fbclid=IwAR3Ng8rZOZzIHxVAX1nHR0lsTqWtJdhL4z3GfHVd09lp7R0PWvRQ-Pn8Jw0 (Këtu jemi mbështetur per Krijimin e Kodit FourSquare)
 
-
+Faza e dyte
 
 
