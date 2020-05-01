@@ -1,8 +1,7 @@
-package rsaexample;
+
 
 import java.beans.XMLEncoder;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,17 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
-import java.util.Random;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-
 
 public class test {
     private PrivateKey privateKey;
@@ -176,9 +171,14 @@ public class test {
 		    		System.out.println("Gabim 2");
 		    	}
 		    }
+		// args[0] = argumenti1
+		// args[1] = argumenti2
+		// args[2] = argumenti3
+		// args[3] = argumenti4
 		public void Export2(String argumenti2, String argumenti3, String argumenti4) throws IOException {	
-	    	Boolean exist = FileExists(argumenti3, Path, ".xml");
+			Boolean exist = FileExists(argumenti3, Path, ".xml");
 			Boolean existsPu = FileExists(argumenti3, Path, ".pub.xml");
+			
 			if(existsPu && argumenti2.equals("public") && argumenti4.endsWith(".pub.xml")) {
 				Person w2 = new Person(n1,e1);
 				
@@ -269,6 +269,7 @@ public class test {
                     .encodeToString(ar2.getBytes(StandardCharsets.UTF_8.toString()));
 	
 			String ciphertext = n11 + "." + n2 + "." + n3 + "." + n4;
+			
 			if(ar3.endsWith(".txt")) {
 	    		FileOutputStream priv = new FileOutputStream(new File("C:\\\\Users\\\\Uran\\\\eclipse-workspace\\\\rsaexample\\\\"+ ar3));
 				XMLEncoder encoder1 = new XMLEncoder(priv);
