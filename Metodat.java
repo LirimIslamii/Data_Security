@@ -18,11 +18,11 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-public class test {
+public class Metodat {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     
-    public test() throws NoSuchAlgorithmException {
+    public Metodat() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
         KeyPair pair = keyGen.generateKeyPair();
