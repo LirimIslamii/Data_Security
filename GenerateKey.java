@@ -317,17 +317,44 @@ public class test {
     	}
 	    
 	    
-	    public void Read_Message(String argumenti1) throws UnsupportedEncodingException {
-	    	
-            String marrsi = argumenti1.split("\\.", 0)[0];
-            String mesazhi = argumenti1.split("\\.", 0)[3];
-            
-            byte[] dataBytes1 = Base64.getDecoder().decode(marrsi);
-	        String marrsi1 = new String(dataBytes1, StandardCharsets.UTF_8.name());	
-	        byte[] dataBytes2 = Base64.getDecoder().decode(mesazhi);
-	        String mesazhi1 = new String(dataBytes2, StandardCharsets.UTF_8.name());
-	        
-	        System.out.println("Marresi: " + marrsi1);
-	        System.out.println("Mesazhi: " + mesazhi1);
+	    public void Read_Message(String argumenti1) throws UnsupportedEncodingException, IOException {
+			if(!argumenti1.endsWith(".txt")){
+					String marrsi = argumenti1.split("\\.", 0)[0];
+		            String mesazhi = argumenti1.split("\\.", 0)[3];
+		            
+		            byte[] dataBytes1 = Base64.getDecoder().decode(marrsi);
+			        String marrsi1 = new String(dataBytes1, StandardCharsets.UTF_8.name());	
+			        byte[] dataBytes2 = Base64.getDecoder().decode(mesazhi);
+			        String mesazhi1 = new String(dataBytes2, StandardCharsets.UTF_8.name());
+			        Boolean exist = FileExists(marrsi1, "./", ".xml");
+			    if(exist) {
+			        System.out.println("Marresi: " + marrsi1);
+			        System.out.println("Mesazhi: " + mesazhi1);
+			     	}
+			    else{
+			     	System.out.println("Gabim: Celesi privat 'keys/" + marrsi1 +".xml' nuk ekziston");
+			    }
+			}
+			else{
+					String contents = Files.lines(Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\" + argumenti1)).collect(Collectors.joining("\n"));
+					contents = contents.split("<string>")[1].split("</string>")[0];
+					
+					String marrsi = contents.split("\\.", 0)[0];
+		            String mesazhi = contents.split("\\.", 0)[3];
+
+					byte[] dataBytes1 = Base64.getDecoder().decode(marrsi);
+			        String marrsi1 = new String(dataBytes1, StandardCharsets.UTF_8.name());	
+			        byte[] dataBytes2 = Base64.getDecoder().decode(mesazhi);
+			        String mesazhi1 = new String(dataBytes2, StandardCharsets.UTF_8.name());
+			        Boolean exist = FileExists(marrsi1, "./", ".xml");
+			    if(exist) {
+			        System.out.println("Marresi: " + marrsi1);
+			        System.out.println("Mesazhi: " + mesazhi1);
+			     	}
+			    else{
+			     	System.out.println("Gabim: Celesi privat 'keys/" + marrsi1 +".xml' nuk ekziston");
+			    }
+			
+			}
     	}
 }
