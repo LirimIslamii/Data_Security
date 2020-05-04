@@ -215,32 +215,46 @@ public class Metodat {
 	    	}
 	    }
 		
-		public void Import(String argumenti1, String argumenti2) throws IOException {
-		    	Boolean existsPu = FileExists(argumenti2, "./", "");
-				Boolean exist = FileExists(argumenti2, "./", "");
-		    	if(!existsPu && argumenti2.endsWith(".pub.xml")) {
-			        Person w2 = new Person(n1,e1);
-					FileOutputStream pub = new FileOutputStream(new File("./"+ argumenti1 + ".pub.xml"));
-					XMLEncoder encoder2 = new XMLEncoder(pub);
-					encoder2.writeObject(w2);
-					encoder2.close();
-					pub.close();
-					System.out.println("Celesi publik u ruajt ne fajllin " + argumenti1 + ".pub.xml");
-		    	}
-		    	else if(!exist && argumenti2.endsWith(".xml")) {
-			        Person w2 = new Person(n1,e1);
-					FileOutputStream pub = new FileOutputStream(new File("./"+ argumenti1 + ".xml"));
-					XMLEncoder encoder2 = new XMLEncoder(pub);
-					encoder2.writeObject(w2);
-					encoder2.close();
-					pub.close();					
-					System.out.println("Celsi privat u ruajt ne fajllin 'keys/" + argumenti1 + ".xml'");
-		    	} 
+		public void Import(String name, String path) throws IOException {
+		    	Boolean existsPublik = FileExists(name, Path, ".pub.xml");
+				Boolean existsPrivat = FileExists(name, Path, ".xml");
+				String emriFajllit = path.split("\\\\")[10];
+				if(!existsPublik && emriFajllit.endsWith(".pub.xml")) {
+					Path temp = Files.move 
+					        (Paths.get(path),  
+					        Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\keys\\" + emriFajllit)); 
+					  
+					        if(temp != null) 
+					        { 
+					            System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'."); 
+					        } 
+					        else
+					        { 
+					            System.out.println("Deshtoj bartja e fajllit"); 
+					        } 
+				}
+				else if(!existsPrivat && emriFajllit.endsWith(".xml")) {
+					Path temp = Files.move 
+					        (Paths.get(path),  
+					        Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\keys\\" + emriFajllit)); 
+					  
+					        if(temp != null) 
+					        { 
+					            System.out.println("Celesi privat u ruajt ne fajllin 'keys/" + name + ".xml'."); 
+					            System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'."); 
+					        } 
+					        else
+					        { 
+					            System.out.println("Deshtoj bartja e fajllit"); 
+					        } 
+				}
+				else if(existsPublik) {
+					System.out.println("Gabim: Celesi '" + name + "' ekziston paraprakisht.");
+				}
 				else {
-					System.out.println("Gabim: Fajlli i dhene nuk eshte valid.");
+					System.out.println("Gabim: Fajlli i dhene nuk eshte celes valid");
 				}
 		    }
-
 	    public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
 	    	String enkodimiBaze64UTF8 = Base64.getEncoder()
