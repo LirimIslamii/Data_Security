@@ -29,23 +29,23 @@ public class Metodat {
     RSAPrivateCrtKey privKey = (RSAPrivateCrtKey) keyPair.getPrivate();
     RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
 
-    BigInteger n = privKey.getModulus();
-    BigInteger e = privKey.getPublicExponent();
-    BigInteger p = privKey.getPrimeP();
-    BigInteger q = privKey.getPrimeQ();
-    BigInteger dp = privKey.getPrimeExponentP();
-    BigInteger dq = privKey.getPrimeExponentQ();
-    BigInteger inverseQ = privKey.getCrtCoefficient();
-    BigInteger d = privKey.getPrivateExponent();
+    BigInteger n = ((RSAKey) privKey).getModulus();
+    BigInteger e = ((RSAPrivateCrtKey) privKey).getPublicExponent();
+    BigInteger p = ((RSAPrivateCrtKey) privKey).getPrimeP();
+    BigInteger q = ((RSAPrivateCrtKey) privKey).getPrimeQ();
+    BigInteger dp = ((RSAPrivateCrtKey) privKey).getPrimeExponentP();
+    BigInteger dq = ((RSAPrivateCrtKey) privKey).getPrimeExponentQ();
+    BigInteger inverseQ = ((RSAPrivateCrtKey) privKey).getCrtCoefficient();
+    BigInteger d = ((RSAPrivateKey) privKey).getPrivateExponent();
         
-	String n1 = n.toString();
-	String e1 = e.toString();
-	String p1 = p.toString();
-	String q1 = q.toString();
-	String dp1 = dp.toString();
-	String dq1 = dq.toString();
-	String inverseQ1 = inverseQ.toString();
-	String d1 = d.toString();
+	String N = encoder.encodeToString(n.toByteArray());
+	String E = encoder.encodeToString(e.toByteArray());
+	String P = encoder.encodeToString(p.toByteArray());
+	String Q = encoder.encodeToString(q.toByteArray());
+	String DP = encoder.encodeToString(dp.toByteArray());
+	String DQ = encoder.encodeToString(dq.toByteArray());
+	String INVERSEQ = encoder.encodeToString(inverseQ.toByteArray());
+	String D = encoder.encodeToString(d.toByteArray());
 
     public Metodat() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
