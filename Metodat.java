@@ -149,25 +149,31 @@ public class Metodat {
 		public void Export(String publicOrPrivat, String name) throws IOException {	
 		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
 				Boolean existsPublik = FileExists(name, Path, ".pub.xml");
-				if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
+		if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
+					String contents = Files.lines(Paths.get("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\" + name + ".pub.xml"
+							)).collect(Collectors.joining("\n"));   
+					
 		    		System.out.println("<RSAKeyValue>");
-		    		System.out.println("    <Modulus>" + pubKey.getModulus() + "</Modulus>");
-		    		System.out.println("    <Exponent>" + pubKey.getPublicExponent() + "</Exponent>");
+		    		System.out.println("    <Modulus>" + contents.split("<string>")[1].split("</string>")[0] + "</Modulus>");
+		    		System.out.println("    <Exponent>" + contents.split("<string>")[2].split("</string>")[0] + "</Exponent>");
 		    		System.out.println("</RSAKeyValue>");
 		    	}
 				else if(!existsPublik && publicOrPrivat.equals("public")) {
 		    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
 				}
 				else if(existsPrivat && publicOrPrivat.equals("private") && !publicOrPrivat.endsWith(".xml")) {
+					String contents = Files.lines(Paths.get("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\" + name + ".xml"
+							)).collect(Collectors.joining("\n")); 
+					
 					System.out.println("<RSAKeyValue>");
-		    		System.out.println("    <Modulus>" + privKey.getModulus() + "</Modulus>");
-		    		System.out.println("    <Exponent>" + privKey.getPublicExponent() + "</Exponent>");
-		    		System.out.println("    <P>" + privKey.getPrimeP() + "</P>");
-		    		System.out.println("    <Q>" + privKey.getPrimeQ() + "</Q>");
-		    		System.out.println("    <DP>" + privKey.getPrimeExponentP() + "</DP>");
-		    		System.out.println("    <DQ>" + privKey.getPrimeExponentQ() + "</DQ>");
-		    		System.out.println("    <InverseQ>" + privKey.getCrtCoefficient() + "</InverseQ>");
-		    		System.out.println("    <D>" + privKey.getPrivateExponent() + "</D>");
+		    		System.out.println("    <Modulus>" + contents.split("<string>")[6].split("</string>")[0] + "</Modulus>");
+		    		System.out.println("    <Exponent>" + contents.split("<string>")[4].split("</string>")[0] + "</Exponent>");
+		    		System.out.println("    <P>" + contents.split("<string>")[7].split("</string>")[0] + "</P>");
+		    		System.out.println("    <Q>" + contents.split("<string>")[8].split("</string>")[0] + "</Q>");
+		    		System.out.println("    <DP>" + contents.split("<string>")[1].split("</string>")[0] + "</DP>");
+		    		System.out.println("    <DQ>" + contents.split("<string>")[2].split("</string>")[0] + "</DQ>");
+		    		System.out.println("    <InverseQ>" + contents.split("<string>")[5].split("</string>")[0] + "</InverseQ>");
+		    		System.out.println("    <D>" + contents.split("<string>")[3].split("</string>")[0] + "</D>");
 		    		System.out.println("</RSAKeyValue>");
 				}
 				else if(!existsPrivat && publicOrPrivat.equals("private")) {
