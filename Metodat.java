@@ -1,12 +1,12 @@
 import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
@@ -18,17 +18,23 @@ import javax.crypto.SecretKey;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
+import java.nio.file.*;
+import static java.nio.file.StandardCopyOption.*;
+import java.net.*;
 
-public class Metodat {
+
+class Metodat {
     private PrivateKey privateKey;
     private PublicKey publicKey;
-    private static String Path = "C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\";
+    private static String Path = "////Users////lirimislami////Desktop////Java////keys////";
 
     KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
     KeyPair keyPair = keyPairGen.genKeyPair();
     RSAPrivateCrtKey privKey = (RSAPrivateCrtKey) keyPair.getPrivate();
     RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
-
+	
+	Base64.Encoder encoder = Base64.getEncoder();
+	    
     BigInteger n = ((RSAKey) privKey).getModulus();
     BigInteger e = ((RSAPrivateCrtKey) privKey).getPublicExponent();
     BigInteger p = ((RSAPrivateCrtKey) privKey).getPrimeP();
@@ -64,6 +70,10 @@ public class Metodat {
         fos.close();
     }
 
+    private static void copyFile(File source, File dest) throws IOException {
+    Files.copy(source.toPath(), dest.toPath());
+}
+
     public static Boolean FileExists(String user, String path, String type){
         File tempFile = new File("" + path + user + type + "");
         boolean exists = tempFile.exists();
@@ -91,21 +101,36 @@ public class Metodat {
 		}
 		return encryptedData;
 	}
+	public static void ReturnMessage(String marrsi, String mesazhi) throws UnsupportedEncodingException, IOException{
+				    byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
+			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
+			        byte[] dekodimiMesazhit = Base64.getDecoder().decode(mesazhi);
+			        String Mesazhi = new String(dekodimiMesazhit, StandardCharsets.UTF_8.name());
+			        Boolean exist = FileExists(Marrsi, Path, ".xml");
+			    if(exist) {
+			        System.out.println("Marresi: " + Marrsi);
+			        System.out.println("Mesazhi: " + Mesazhi);
+			     	}
+			    else{
+			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
+			    }
+			}
 
-		public void CreateUser(String name) throws IOException {
+
+		public void CreateUser(String name) throws IOException {		    
 			Boolean existsPrivat = FileExists(name, Path, ".xml");
 			Boolean existsPublik = FileExists(name, Path, ".pub.xml");
 			if(!(existsPrivat && existsPublik)){
-		    	Person celsiPrivat = new Person(n1,e1,p1,q1,dp1,dq1,inverseQ1,d1);
-		        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\"
+		    	Person celsiPrivat = new Person(N,E,P,Q,DP,DQ,INVERSEQ,D);
+		        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("////Users////lirimislami////Desktop////Java////keys////"
 		        																	+ name +".xml"));
 				XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
 				enkoderiCelsitPrivat.writeObject(celsiPrivat);
 				enkoderiCelsitPrivat.close();
 				ruajCelsinPrivat.close();
 				
-		        Person celsiPublik = new Person(n1,e1);
-				FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\"
+		        Person celsiPublik = new Person(N,E);
+				FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("////Users////lirimislami////Desktop////Java////keys////"
 																		+ name +".pub.xml"));
 				XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
 				enkoderiCelsitPublik.writeObject(celsiPublik);
@@ -149,8 +174,8 @@ public class Metodat {
 		public void Export(String publicOrPrivat, String name) throws IOException {	
 		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
 				Boolean existsPublik = FileExists(name, Path, ".pub.xml");
-		if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
-					String contents = Files.lines(Paths.get("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\" + name + ".pub.xml"
+				if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
+					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////Java////keys////" + name + ".pub.xml"
 							)).collect(Collectors.joining("\n"));   
 					
 		    		System.out.println("<RSAKeyValue>");
@@ -162,7 +187,7 @@ public class Metodat {
 		    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
 				}
 				else if(existsPrivat && publicOrPrivat.equals("private") && !publicOrPrivat.endsWith(".xml")) {
-					String contents = Files.lines(Paths.get("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\keys\\\\" + name + ".xml"
+					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////Java////keys////" + name + ".xml"
 							)).collect(Collectors.joining("\n")); 
 					
 					System.out.println("<RSAKeyValue>");
@@ -189,25 +214,19 @@ public class Metodat {
 		public void Export(String publicOrPrivat, String name, String file) throws IOException {	
 			Boolean existsPrivat = FileExists(name, Path, ".xml");
 			Boolean existsPublik = FileExists(name, Path, ".pub.xml");
-			if(existsPublik && publicOrPrivat.equals("public") && file.endsWith(".xml")) {
-				Person celsiPublik = new Person(n1,e1);
-				FileOutputStream ruajCelsinPublik = new FileOutputStream(new File(Path + file));
-				XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
-				enkoderiCelsitPublik.writeObject(celsiPublik);
-				enkoderiCelsitPublik.close();
-				ruajCelsinPublik.close();
-				System.out.println("Celesi publik u ruajt ne fajllin '" + file + "'.");
+			if(existsPublik && publicOrPrivat.equals("public") && file.endsWith(".pub.xml")) {
+				File source = new File("////Users////lirimislami////Desktop////Java////keys////" + name + ".pub.xml");
+				File destination = new File("////Users////lirimislami////Desktop////Java////keys////" + file);
+				copyFile(source, destination);
+				System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + file + "'");
 			}
 			else if(!existsPublik && publicOrPrivat.equals("public")) {
 	    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
 			}
 			else if(existsPrivat && publicOrPrivat.equals("private") && file.endsWith(".xml")) {
-				Person celsiPrivat = new Person(n1,e1);
-				FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File(Path + file));
-				XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
-				enkoderiCelsitPrivat.writeObject(celsiPrivat);
-				enkoderiCelsitPrivat.close();
-				ruajCelsinPrivat.close();
+				File source = new File("////Users////lirimislami////Desktop////Java////keys////" + name + ".xml");
+				File destination = new File("////Users////lirimislami////Desktop////Java////keys////" + file);
+				copyFile(source, destination);
 				System.out.println("Celesi privat u ruajt ne fajllin '" + file + "'.");
 			}
 			else if(!existsPrivat && publicOrPrivat.equals("private")) {
@@ -224,11 +243,11 @@ public class Metodat {
 		public void Import(String name, String path) throws IOException {
 		    	Boolean existsPublik = FileExists(name, Path, ".pub.xml");
 				Boolean existsPrivat = FileExists(name, Path, ".xml");
-				String emriFajllit = path.split("\\\\")[10];
+				String emriFajllit = path.split("////")[6];	
 				if(!existsPublik && emriFajllit.endsWith(".pub.xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
-					        Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\keys\\" + emriFajllit)); 
+					        Paths.get("//Users//lirimislami//Desktop//Java//keys//" + emriFajllit)); 
 					  
 					        if(temp != null) 
 					        { 
@@ -242,8 +261,14 @@ public class Metodat {
 				else if(!existsPrivat && emriFajllit.endsWith(".xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
-					        Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\keys\\" + emriFajllit)); 
-					  
+					        Paths.get("//Users//lirimislami//Desktop//Java//keys//" + name + ".xml")); 
+							Person celsiPublik = new Person(N,E);
+							FileOutputStream ruajCelsinPublik = new FileOutputStream(new File(Path + name + ".pub.xml"));
+							XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
+							enkoderiCelsitPublik.writeObject(celsiPublik);
+							enkoderiCelsitPublik.close();
+							ruajCelsinPublik.close();
+							
 					        if(temp != null) 
 					        { 
 					            System.out.println("Celesi privat u ruajt ne fajllin 'keys/" + name + ".xml'."); 
@@ -261,6 +286,32 @@ public class Metodat {
 					System.out.println("Gabim: Fajlli i dhene nuk eshte celes valid");
 				}
 		    }
+		public void Pastebin(String name,String url) throws IOException {
+
+	        URL urlObj = new URL(url);
+	        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+	        connection.setRequestMethod("GET");
+
+	        Integer responseCode = connection.getResponseCode();
+	        StringBuffer response = new StringBuffer();
+	        if (responseCode == HttpURLConnection.HTTP_OK) {
+	            BufferedReader inputreader = new BufferedReader(
+	                    new InputStreamReader(connection.getInputStream()));
+	            String inputLine;
+
+	            while ((inputLine = inputreader.readLine()) != null) {
+	                response.append(inputLine);
+	            }
+	        }
+	        
+
+		    FileOutputStream out = new FileOutputStream(new File("////Users////lirimislami////Desktop////Java////keys////" + name + ".pub.xml"));
+			XMLEncoder encoder = new XMLEncoder(out);
+			encoder.writeObject(response.toString());
+			encoder.close();
+			out.close();
+			System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'");
+    }
 	    public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
 	    	String enkodimiBaze64UTF8 = Base64.getEncoder()
@@ -291,7 +342,7 @@ public class Metodat {
 			String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;
 			
 			if(file.endsWith(".txt")) {
-	    		FileOutputStream ruajFile = new FileOutputStream(new File("C:\\\\Users\\\\Uran\\\\Desktop\\\\Projekti Siguri\\\\" + file));
+	    		FileOutputStream ruajFile = new FileOutputStream(new File("////Users////lirimislami////Desktop////Java////" + file));
 				XMLEncoder encoder = new XMLEncoder(ruajFile);
 				encoder.writeObject(ciphertext);
 				encoder.close();
@@ -338,46 +389,20 @@ public class Metodat {
 				System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
 			}
     	}
-	    
-	    
+
 	    public void Read_Message(String encryptedMessage) throws UnsupportedEncodingException, IOException {
 			if(!encryptedMessage.endsWith(".txt")){
 					String marrsi = encryptedMessage.split("\\.", 0)[0];
 		            String mesazhi = encryptedMessage.split("\\.", 0)[3];
-		            
-		            byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
-			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
-			        byte[] dekodimiMesazhit = Base64.getDecoder().decode(mesazhi);
-			        String Mesazhi = new String(dekodimiMesazhit, StandardCharsets.UTF_8.name());
-			        Boolean exist = FileExists(Mesazhi, Path, ".xml");
-			    if(exist) {
-			        System.out.println("Marresi: " + Marrsi);
-			        System.out.println("Mesazhi: " + Mesazhi);
-			     	}
-			    else{
-			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
-			    }
+		            ReturnMessage(marrsi,mesazhi);
 			}
 			else{
-					String contents = Files.lines(Paths.get("C:\\Users\\Uran\\Desktop\\Projekti Siguri\\" +
+					String contents = Files.lines(Paths.get("//Users//lirimislami//Desktop//Java//" +
 								encryptedMessage)).collect(Collectors.joining("\n"));
 					contents = contents.split("<string>")[1].split("</string>")[0];
-					
-					String marrsi = encryptedMessage.split("\\.", 0)[0];
-		            String mesazhi = encryptedMessage.split("\\.", 0)[3];
-		            
-		            byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
-			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
-			        byte[] dekodimiMesazhit = Base64.getDecoder().decode(mesazhi);
-			        String Mesazhi = new String(dekodimiMesazhit, StandardCharsets.UTF_8.name());
-			        Boolean exist = FileExists(Mesazhi, Path, ".xml");
-			    if(exist) {
-			        System.out.println("Marresi: " + Marrsi);
-			        System.out.println("Mesazhi: " + Mesazhi);
-			     	}
-			    else{
-			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
-			    }
+					String marrsi = contents.split("\\.", 0)[0];
+		            String mesazhi = contents.split("\\.", 0)[3];
+		            ReturnMessage(marrsi,mesazhi);
 			}
     	}
 }
