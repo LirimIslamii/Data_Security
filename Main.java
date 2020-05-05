@@ -16,15 +16,7 @@ public class Main {
         Metodat K = new Metodat();
         K.writeToFile("RSA/publicKey", K.getPublicKey().getEncoded());
         K.writeToFile("RSA/privateKey", K.getPrivateKey().getEncoded());
-        
-        if(args.length == 0 || args.length > 5){
 
-            System.out.println("\n\t\tProgrami pranon deri ne 5 argumente!\n");
-            System.out.println("\t\t\tPerdorimi i Programit\n\n1.Per Kodin Morse shtyp -> morse-code encode | decode <text>\n" 
-              + "~Per Beep shtyp -> morse-code --audio <text>\n"+ "2.Per Kodin Tap shtyp -> tap-code encode | decode <text>\n" 
-                                      + "3.Per Kodin FourSquare shtyp -> four-square encrypt | decrypt <key1> <key2> <text>");
-                System.exit(0);
-            }
         if("morse-code".equals(args[0])){
             if("encode".equals(args[1])){
                 if(args[2].matches("^[a-zA-Z0-9 ]+"))
@@ -65,42 +57,50 @@ public class Main {
         
         // Faza e dyte
         
-        if(args[0].equals("create-user")) {
-            if(args[1].matches("^[a-zA-Z0-9._]+")) {
+        if(args[0].equals("create-user") && args.length == 2) {
+            if(args[1].matches("^[a-zA-Z0-9._]+"))
                 K.CreateUser(args[1]);
-            }
-            else {
-                System.out.println("Keni shenuar gabim. Lejohen vetem shkronjat,numrat dhe . _");
-            }
+            else 
+                System.out.println("Keni shenuar gabim. Lejohen vetem shkronjat, numrat dhe . _");
         }
-        else if(args[0].equals("delete-user")) {
+        else if(args[0].equals("delete-user") && args.length == 2) 
             K.Delete(args[1]);
-        }
-        else if(args[0].equals("export-key")) {
-            if(args.length == 3) {
+        else if(args[0].equals("export-key") && args.length == 4) {
+            if(args.length == 3) 
                 K.Export(args[1], args[2]);
-            }
-            else {
+            else
                 K.Export(args[1], args[2],args[3]);
-            }
         }
-        else if(args[0].equals("import-key")) {
-            K.Import(args[1], args[2]);
+        else if(args[0].equals("import-key") && args.length == 3){
+            if(args[2].startsWith("https") || args[2].startsWith("http"))
+                K.Pastebin(args[1], args[2]);
+            else
+                K.Import(args[1],args[2]);
         }
       
-        else if(args[0].equals("write-message")) {
-            if(args.length == 3) {
+        else if(args[0].equals("write-message") && args.length == 4) {
+            if(args.length == 3)
                 K.Write(args[1], args[2]);
-            }
-            else {
+            else
                 K.Write(args[1], args[2],args[3]);
-            }
         }
-        else if(args[0].equals("read-message")) {
+        else if(args[0].equals("read-message") && args.length == 2)
             K.Read_Message(args[1]);
-        }
         else {
-            System.exit(0);
+            System.out.println("\n\t\tProgrami pranon deri ne 5 argumente!\n");
+            System.out.println("\t\t\tPerdorimi i Programit\n\n\t1.Per Kodin Morse shtyp -> morse-code encode | decode <text>\n" 
+              + "\t~Per Beep shtyp -> morse-code --audio <text>\n"+ "\t2.Per Kodin Tap shtyp -> tap-code encode | decode <text>\n" 
+                                      + "\t3.Per Kodin FourSquare shtyp -> four-square encrypt | decrypt <key1> <key2> <text>\n"
+                                      + "\t4.Komanda create-user <name>\n"
+                                      + "\t5.Komanda delete-user <name>\n"
+                                      + "\t6.Komanda export-key <public | private> <name> [file]\n"
+                                      + "\t7.Komanda import-key <name> <path>\n"
+                                      + "\t8.Komanda write-message <name> <message> [file]\n"
+                                      + "\t9.Komanda read-message <encrypted-message>\n");
+                System.exit(0);
         }
     }
 }
+
+
+
