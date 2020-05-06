@@ -110,14 +110,14 @@ Ekzekutimi i Programit :
 
 ➤ Për komandën create-user:
 
-  ✸ java Main create-user <name>
+         ✸ java Main create-user <name>
 
 <img width="985" alt="create-user" src="https://user-images.githubusercontent.com/61246827/81131517-b0d09400-8f4b-11ea-9f13-4050a1500241.png">
 
 
 ➤ Për komandën delete-user:
 
-  ✸ java Main delete-user <name>
+         ✸ java Main delete-user <name>
 
 <img width="989" alt="delete-user" src="https://user-images.githubusercontent.com/61246827/81131522-b4fcb180-8f4b-11ea-83c0-07bfbf87bcb0.png">
 
@@ -125,28 +125,28 @@ Ekzekutimi i Programit :
 
 ➤ Për komandën export-key:
   
-  ✸ java Main export-key <public> | <private> <name> [file]
+         ✸ java Main export-key <public> | <private> <name> [file]
 
 <img width="1191" alt="export-key" src="https://user-images.githubusercontent.com/61246827/81131532-be861980-8f4b-11ea-8572-0243215c97cf.png">
 
 
 ➤ Për komandën import-key:
 
-  ✸ java Main import-key <name> <path>
+         ✸ java Main import-key <name> <path>
 
 <img width="1192" alt="import-key" src="https://user-images.githubusercontent.com/61246827/81131677-35bbad80-8f4c-11ea-986c-e011457032b9.png">
    
    
 ➤ Për komandën write-message:
 
-  ✸ java Main write-message <name> <message> [file]
+         ✸ java Main write-message <name> <message> [file]
 
 <img width="1194" alt="write-message" src="https://user-images.githubusercontent.com/61246827/81131678-37857100-8f4c-11ea-8844-3f122a2e30e2.png">
 
 
 ➤ Për komandën read-message:
 
-  ✸ java Main read-message <encrypted-message>
+         ✸ java Main read-message <encrypted-message>
 
 <img width="1193" alt="read-message" src="https://user-images.githubusercontent.com/61246827/81131689-3d7b5200-8f4c-11ea-8cd3-6fa6681ef202.png">
 
