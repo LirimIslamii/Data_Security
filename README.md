@@ -2,7 +2,7 @@
 # Data_Security
 Ky është Projekti në lëndën Siguria e të dhënave!
 
-Faza e pare
+Faza e parë
 
 Në këtë program janë implementuar tre funksione. Realizimin e këtyre funksioneve e kemi bërë me gjuhën programuese Java!
 Kuptohet që të tre kemi punuar ne këtë projekt!
@@ -67,6 +67,77 @@ https://www.vogella.com/tutorials/JavaRegularExpressions/article.html (Këtu jem
 
 https://forum.moparisthebest.com/t/foursquare-cipher/409572.html?fbclid=IwAR3Ng8rZOZzIHxVAX1nHR0lsTqWtJdhL4z3GfHVd09lp7R0PWvRQ-Pn8Jw0 (Këtu jemi mbështetur per Krijimin e Kodit FourSquare)
 
-Faza e dyte
+                                                  Faza e dytë
+
+
+
+❂ Komanda create-user:
+
+1. Krijon një përdorues dhe gjeneron një dyshe të çelsave (çelësin publik dhe çelësin privat të cilët i ruan në një vend të caktuar si XML fajlla!)
+
+❂ Komanda delete-user:
+
+1. Largon(fshinë) çelësat publik dhe privat në bazë të emrit të përdoruesit!
+
+❂ Komanda export-key:
+
+1. Eksporton çelësin privat apo publik nga fajllat ku janë të ruajtur këta çelësa!
+
+❂ Komanda import-key:
+
+1. Importon çelësin privat | publik nga një shteg i dhënë dhe e vendos aty ku janë të ruajtur çelësat!
+
+❂ Komanda write-message:
+
+1. E shkruan një mesazh të enkriptuar për një shfrytëzues!
+
+❂ Komanda read-message:
+
+1. E dekripton dhe shfaqë në consolë mesazhin e enkriptuar!
+
+
+
+Ekzekutimi i Programit : 
+
+✺ HAPI 1:
+
+➢ Kompailimi në cmd(Command Prompt) apo Terminal(Sisteme Operative → Linux apo MacOS) duke përdorur komandën:  javac Main.java
+  (Sigurohuni të jeni në pathin e duhur e.x -> Desktop)!
+
+✺ HAPI 2:
+
+➢ Për të ekzekutuar njërin nga Funksionet e programit duhet t'i shkruani komandat në formatin përshembull:
+
+➤ Për komandën create-user:
+
+  ✸ java Main create-user <name>
+
+
+
+
+➤ Për komandën delete-user:
+
+  ✸ java Main delete-user <name>
+
+➤ Për komandën export-key:
+  
+  ✸ java Main export-key <public> | <private> <name> [file]
+
+➤ Për komandën import-key:
+
+  ✸ java Main import-key <name> <path>
+   
+
+➤ Për komandën write-message:
+
+  ✸ java Main write-message <name> <message> [file]
+
+
+➤ Për komandën read-message:
+
+  ✸ java Main read-message <encrypted-message>
+
+
+
 
 
