@@ -65,10 +65,10 @@ public class Main {
         }
         else if(args[0].equals("delete-user") && args.length == 2) 
             K.Delete(args[1]);
-        else if(args[0].equals("export-key") && args.length == 4) {
-            if(args.length == 3) 
+        else if(args[0].equals("export-key") && args.length == 3) {
                 K.Export(args[1], args[2]);
-            else
+        }
+        else if(args[0].equals("export-key") && args.length == 4) {
                 K.Export(args[1], args[2],args[3]);
         }
         else if(args[0].equals("import-key") && args.length == 3){
@@ -78,12 +78,12 @@ public class Main {
                 K.Import(args[1],args[2]);
         }
       
-        else if(args[0].equals("write-message") && args.length == 4) {
-            if(args.length == 3)
+        else if(args[0].equals("write-message") && args.length == 3) 
                 K.Write(args[1], args[2]);
-            else
+
+        else if(args[0].equals("write-message") && args.length == 4) 
                 K.Write(args[1], args[2],args[3]);
-        }
+
         else if(args[0].equals("read-message") && args.length == 2)
             K.Read_Message(args[1]);
         else {
