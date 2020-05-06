@@ -17,7 +17,7 @@ public class Main {
         K.writeToFile("RSA/publicKey", K.getPublicKey().getEncoded());
         K.writeToFile("RSA/privateKey", K.getPrivateKey().getEncoded());
 
-        if("morse-code".equals(args[0])){
+        if("morse-code".equals(args[0]) && args.length == 3){
             if("encode".equals(args[1])){
                 if(args[2].matches("^[a-zA-Z0-9 ]+"))
                         System.out.println(M.encode(args[2]));
@@ -32,7 +32,7 @@ public class Main {
                     else
                         System.out.println("\n\t\tTeksti duhet te përmbajë vetëm numra dhe shkronja!\n");
             }
-        if("tap-code".equals(args[0])){
+        else if("tap-code".equals(args[0]) && args.length == 3){
             if("encode".equals(args[1])){
                 if(args[2].matches("^[a-zA-Z ]+"))
                         T.encode(args[2]);
@@ -46,7 +46,7 @@ public class Main {
                 else
                     T.decode(args[2]);
         }
-        if("four-square".equals(args[0])){
+        else if("four-square".equals(args[0]) && args.length == 5){
                 if("encrypt".equals(args[1])){
                     if(args[2].matches("^[a-zA-Z ]+"))
                         System.out.println(F.encrypt(args[2],args[3],args[4]).toLowerCase());
@@ -57,7 +57,7 @@ public class Main {
         
         // Faza e dyte
         
-        if(args[0].equals("create-user") && args.length == 2) {
+        else if(args[0].equals("create-user") && args.length == 2) {
             if(args[1].matches("^[a-zA-Z0-9._]+"))
                 K.CreateUser(args[1]);
             else 
