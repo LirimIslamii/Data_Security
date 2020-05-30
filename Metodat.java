@@ -21,7 +21,9 @@ import java.util.stream.Collectors;
 import java.nio.file.*;
 import static java.nio.file.StandardCopyOption.*;
 import java.net.*;
-
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 class Metodat {
     private PrivateKey privateKey;
@@ -115,33 +117,102 @@ class Metodat {
 			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
 			}
 
-
-		public void CreateUser(String name) throws IOException {		    
+private static boolean checkString(String input) {
+			    String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
+			    char currentCharacter;
+			    boolean numberPresent = false;
+			    boolean specialCharacterPresent = false;
+			 
+			    for (int i = 0; i < input.length(); i++) {
+			        currentCharacter = input.charAt(i);
+			        if (Character.isDigit(currentCharacter)) {
+			            numberPresent = true;
+			        } else if (specialChars.contains(String.valueOf(currentCharacter))) {
+			            specialCharacterPresent = true;
+			        }
+			    }
+			    return
+			      numberPresent || specialCharacterPresent;
+			}
+			
+	    Scanner input = new Scanner(System.in);
+	    
+		public void CreateUser(String name) throws IOException {		
 			Boolean existsPrivat = FileExists(name, Path, ".xml");
 			Boolean existsPublik = FileExists(name, Path, ".pub.xml");
-			if(!(existsPrivat && existsPublik)){
-		    	Person celsiPrivat = new Person(N,E,P,Q,DP,DQ,INVERSEQ,D);
-		        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
-		        																	+ name +".xml"));
-				XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
-				enkoderiCelsitPrivat.writeObject(celsiPrivat);
-				enkoderiCelsitPrivat.close();
-				ruajCelsinPrivat.close();
-				
-		        Person celsiPublik = new Person(N,E);
-				FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
-																		+ name +".pub.xml"));
-				XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
-				enkoderiCelsitPublik.writeObject(celsiPublik);
-				enkoderiCelsitPublik.close();
-				ruajCelsinPublik.close();
-				
-				System.out.println("Eshte krijuar celesi privat 'keys/" + name + ".xml'");
-				System.out.println("Eshte krijuar celesi publik 'keys/" + name + ".pub.xml'");
+			 if(!(existsPrivat && existsPublik)){
+			System.out.print("Jepni fjalekalimin: ");
+			String password = input.nextLine();
+			
+		if(password.length() >= 6 && checkString(password) == true) {
+			System.out.print("Perserit fjalekalimin: ");
+			String repaitPassword = input.nextLine();
+			if(!password.equals(repaitPassword)) {
+				System.out.println("Gabim: Fjalekalimet nuk perputhen.");
 			}
-			else
-				System.out.print("Gabim: Celesi '" + name + "' ekziston paraprakisht.");
+			else {
+				 
+			    	Person celsiPrivat = new Person(N,E,P,Q,DP,DQ,INVERSEQ,D);
+			        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
+			        																	+ name +".xml"));
+					XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
+					enkoderiCelsitPrivat.writeObject(celsiPrivat);
+					enkoderiCelsitPrivat.close();
+					ruajCelsinPrivat.close();
+					
+			        Person celsiPublik = new Person(N,E);
+					FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
+																			+ name +".pub.xml"));
+					XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
+					enkoderiCelsitPublik.writeObject(celsiPublik);
+					enkoderiCelsitPublik.close();
+					ruajCelsinPublik.close();
+					
+					FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
+    				fileWriter.write(name);
+   					fileWriter.close();
+
+   					String generatedPassword = null;
+			        try {
+			            // Create MessageDigest instance for MD5
+			            MessageDigest md = MessageDigest.getInstance("MD5");
+			            //Add password bytes to digest
+			            md.update(password.getBytes());
+			            //Get the hash's bytes 
+			            byte[] bytes = md.digest();
+			            //This bytes[] has bytes in decimal format;
+			            //Convert it to hexadecimal format
+			            StringBuilder sb = new StringBuilder();
+			            for(int i=0; i< bytes.length ;i++)
+			            {
+			                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+			            }
+			            //Get complete hashed password in hex format
+			            generatedPassword = sb.toString();
+			        } 
+			        catch (NoSuchAlgorithmException e) 
+			        {
+			            e.printStackTrace();
+			        }
+				 
+			        FileWriter fileWriter2 = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
+    				fileWriter2.write(generatedPassword);
+   					fileWriter2.close();
+				  
+					System.out.println("Eshte krijuar shfrytezuesi '" + name + "'");
+					System.out.println("Eshte krijuar celesi privat 'keys/" + name + ".xml'");
+					System.out.println("Eshte krijuar celesi publik 'keys/" + name + ".pub.xml'");
+				
+			}
 		}
+		else{
+			System.out.print("Gabim: Fjalekalimi duhet te permbaje se paku nje numer ose simbol dhe duhet te jete i gjate se paku 6 karaktere.");
+		}
+			}
+				else {
+					System.out.print("Gabim: Celesi '" + name + "' ekziston paraprakisht.");
+				}
+	}
 		
 		public void Delete(String name) {
 				Boolean existsPrivat = FileExists(name, Path, ".xml");
