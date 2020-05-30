@@ -222,6 +222,14 @@ private static boolean checkString(String input) {
 		    		File celsiPrivat = new File(Path + name + ".xml");
 		    		celsiPublik.delete();
 		    		celsiPrivat.delete();
+
+		    		File password = new File("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
+		    		password.delete();
+
+		    		File user = new File("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
+		    		user.delete();
+
+		    		System.out.println("Eshte larguar shfrytezuesi '" + name + "'");
 		    		System.out.println("Eshte larguar celesi privat 'keys/" + name + ".xml'");
 		    		System.out.println("Eshte larguar celesi publik 'keys/" + name + ".pub.xml'");
 		    	}
