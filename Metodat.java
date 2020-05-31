@@ -24,17 +24,29 @@ import java.net.*;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 class Metodat {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private static String Path = "////Users////lirimislami////Desktop////ds////keys////";
+	private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
+	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
 
     KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
     KeyPair keyPair = keyPairGen.genKeyPair();
     RSAPrivateCrtKey privKey = (RSAPrivateCrtKey) keyPair.getPrivate();
-    RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
-	
+    RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();	
 	Base64.Encoder encoder = Base64.getEncoder();
 	    
     BigInteger n = ((RSAKey) privKey).getModulus();
@@ -116,8 +128,8 @@ class Metodat {
 			    else
 			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
 			}
-
-private static boolean checkString(String input) {
+	
+			private static boolean checkString(String input) {
 			    String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
 			    char currentCharacter;
 			    boolean numberPresent = false;
@@ -153,7 +165,7 @@ private static boolean checkString(String input) {
 			else {
 				 
 			    	Person celsiPrivat = new Person(N,E,P,Q,DP,DQ,INVERSEQ,D);
-			        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
+			        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
 			        																	+ name +".xml"));
 					XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
 					enkoderiCelsitPrivat.writeObject(celsiPrivat);
@@ -161,14 +173,14 @@ private static boolean checkString(String input) {
 					ruajCelsinPrivat.close();
 					
 			        Person celsiPublik = new Person(N,E);
-					FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
+					FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
 																			+ name +".pub.xml"));
 					XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
 					enkoderiCelsitPublik.writeObject(celsiPublik);
 					enkoderiCelsitPublik.close();
 					ruajCelsinPublik.close();
 					
-					FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
+					FileWriter fileWriter = new FileWriter("////Users////lirimislami////Desktop////ds////users////" + name + ".txt");
     				fileWriter.write(name);
    					fileWriter.close();
 
@@ -195,7 +207,7 @@ private static boolean checkString(String input) {
 			            e.printStackTrace();
 			        }
 				 
-			        FileWriter fileWriter2 = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
+			        FileWriter fileWriter2 = new FileWriter("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt");
     				fileWriter2.write(generatedPassword);
    					fileWriter2.close();
 				  
@@ -223,10 +235,10 @@ private static boolean checkString(String input) {
 		    		celsiPublik.delete();
 		    		celsiPrivat.delete();
 
-		    		File password = new File("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
+		    		File password = new File("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt");
 		    		password.delete();
 
-		    		File user = new File("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
+		    		File user = new File("////Users////lirimislami////Desktop////ds////users////" + name + ".txt");
 		    		user.delete();
 
 		    		System.out.println("Eshte larguar shfrytezuesi '" + name + "'");
@@ -246,7 +258,68 @@ private static boolean checkString(String input) {
 		    	else 
 		    		System.out.println("Gabim: Celesi '" + name + "' nuk ekziston.");
 		    }
+
+		public void Login(String name) throws IOException{
+			Boolean exists = FileExists(name, Path, ".xml");
+			Boolean existsPas = FileExists(name, "////Users////lirimislami////Desktop////ds////passwords////", "Pas.txt");
+
+			if(exists && existsPas){
+			String contents1 = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////keys////" + name + ".xml"
+					)).collect(Collectors.joining("\n")); 
+			
+			String c = contents1.split("<string>")[6].split("</string>")[0] + "</Modulus>" +
+			contents1.split("<string>")[4].split("</string>")[0] + "</Exponent>";
+		   
+			byte[] randomBytes = c.getBytes();
+		    secureRandom.nextBytes(randomBytes);
+		    
+		    String tokeni =  base64Encoder.encodeToString(randomBytes);
+
+			System.out.print("Jepni fjalekalimin: ");
+			String pass = input.nextLine();
+			
+			
+			String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt")).collect(Collectors.joining("\n"));
+			
+			String generatedPassword = null;
+	        try {
+	            // Create MessageDigest instance for MD5
+	            MessageDigest md = MessageDigest.getInstance("MD5");
+	            //Add password bytes to digest
+	            md.update(pass.getBytes());
+	            //Get the hash's bytes 
+	            byte[] bytes = md.digest();
+	            //This bytes[] has bytes in decimal format;
+	            //Convert it to hexadecimal format
+	            StringBuilder sb = new StringBuilder();
+	            for(int i=0; i< bytes.length ;i++)
+	            {
+	                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+	            }
+	            //Get complete hashed password in hex format
+	            generatedPassword = sb.toString();
+	        } 
+	        catch (NoSuchAlgorithmException e) 
+	        {
+	            e.printStackTrace();
+	        }
 		
+			if(generatedPassword.equals(contents)) {
+				FileWriter fileWriter = new FileWriter("////Users////lirimislami////Desktop////ds////tokenat////" + name + ".txt");
+				fileWriter.write(tokeni);
+				fileWriter.close();
+				System.out.print("Token: " + tokeni);
+			}else{
+				System.out.println("Gabim: Shfrytezuesi ose fjalekalimi i gabuar.");
+			}
+
+		}
+			else {
+				System.out.println("Gabim: Shfrytezuesi ose fjalekalimi i gabuar.");
+			}
+
+		}
+
 		public void Export(String publicOrPrivat, String name) throws IOException {	
 		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
 				Boolean existsPublik = FileExists(name, Path, ".pub.xml");
@@ -281,8 +354,8 @@ private static boolean checkString(String input) {
 		    }
 		
 		public void Export(String publicOrPrivat, String name, String file) throws IOException {	
-			Boolean existsPrivat = FileExists(name, Path, ".xml");
-			Boolean existsPublik = FileExists(name, Path, ".pub.xml");
+			Boolean existsPrivat = FileExists(name, "////Users////lirimislami////Desktop////ds////keys////", ".xml");
+			Boolean existsPublik = FileExists(name, "////Users////lirimislami////Desktop////ds////keys////", ".pub.xml");
 			if(existsPublik && publicOrPrivat.equals("public") && file.endsWith(".pub.xml")) {
 				File source = new File("////Users////lirimislami////Desktop////ds////keys////" + name + ".pub.xml");
 				File destination = new File("////Users////lirimislami////Desktop////ds////keys////" + file);
@@ -306,7 +379,7 @@ private static boolean checkString(String input) {
 		    	Boolean existsPublik = FileExists(name, Path, ".pub.xml");
 				Boolean existsPrivat = FileExists(name, Path, ".xml");
 				if(!existsPublik && path.endsWith(".pub.xml")) {
-					String emriFajllit = path.split("//")[6];	
+					String emriFajllit = path.split("////")[6];	
 					if(emriFajllit.endsWith(".pub.xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
@@ -320,7 +393,7 @@ private static boolean checkString(String input) {
 					}
 				}
 				else if(!existsPrivat && path.endsWith(".xml")) {
-					String emriFajllit = path.split("//")[6];	
+					String emriFajllit = path.split("////")[6];	
 					if(emriFajllit.endsWith(".xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
@@ -346,7 +419,6 @@ private static boolean checkString(String input) {
 					System.out.println("Gabim: Fajlli i dhene nuk eshte celes valid");
 		    }
 		public void Pastebin(String name,String url) throws IOException {
-
 	        URL urlObj = new URL(url);
 	        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
 	        connection.setRequestMethod("GET");
@@ -357,13 +429,10 @@ private static boolean checkString(String input) {
 	            BufferedReader inputreader = new BufferedReader(
 	                    new InputStreamReader(connection.getInputStream()));
 	            String inputLine;
-
 	            while ((inputLine = inputreader.readLine()) != null) {
 	                response.append(inputLine);
 	            }
 	        }
-	        
-
 		    FileOutputStream out = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////" + name + ".pub.xml"));
 			XMLEncoder encoder = new XMLEncoder(out);
 			encoder.writeObject(response.toString());
@@ -455,7 +524,7 @@ private static boolean checkString(String input) {
 		            ReturnMessage(marrsi,mesazhi);
 			}
 			else{
-					String contents = Files.lines(Paths.get("//Users//lirimislami//Desktop//ds//" +
+					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////" +
 								encryptedMessage)).collect(Collectors.joining("\n"));
 					contents = contents.split("<string>")[1].split("</string>")[0];
 					String marrsi = contents.split("\\.", 0)[0];
