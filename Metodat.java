@@ -319,6 +319,23 @@ class Metodat {
 			}
 
 		}
+	public void Status(String token) throws IOException {
+			  File directoryPath = new File("C:/Users/Uran/Desktop/Projekti Siguri/tokenat");
+		      //List of all files and directories
+		      String contents[] = directoryPath.list();
+		      for(int i=0; i<contents.length; i++) {
+		         String contents1 = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/"+ contents[i]))
+															.collect(Collectors.joining("\n"));
+				 if(contents1.equals(token)){
+				 	System.out.println("\nUser: " + contents[i].substring(0, contents[i].length() - 4) );break;
+				 }
+				 if(!contents1.equals(token)){
+					System.out.println("\nTokeni nuk eshte valid.");break;
+				 }
+		      }
+						
+			
+		}
 
 		public void Export(String publicOrPrivat, String name) throws IOException {	
 		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
