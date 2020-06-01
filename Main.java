@@ -86,8 +86,13 @@ public class Main {
 
         else if(args[0].equals("read-message") && args.length == 2)
             K.Read_Message(args[1]);
+        
+        // Faza e trete
+                             
         else if(args[0].equals("login") && args.length == 2)
             K.Login(args[1]);
+        else if(args[0].equals("status") && args.length == 2)
+            K.Status(args[1]);
         else {
             System.out.println("\n\t\tProgrami pranon deri ne 5 argumente!\n");
             System.out.println("\t\t\tPerdorimi i Programit\n\n\t1.Per Kodin Morse shtyp -> morse-code encode | decode <text>\n" 
