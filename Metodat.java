@@ -261,10 +261,9 @@ class Metodat {
 
 		public void Login(String name) throws IOException{
 			Boolean exists = FileExists(name, Path, ".xml");
-			Boolean existsPas = FileExists(name, "////Users////lirimislami////Desktop////ds////passwords////", "Pas.txt");
 
-			if(exists && existsPas){
-			String contents1 = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////keys////" + name + ".xml"
+			if(exists){
+			String contents1 = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
 					)).collect(Collectors.joining("\n")); 
 			
 			String c = contents1.split("<string>")[6].split("</string>")[0] + "</Modulus>" +
@@ -279,7 +278,7 @@ class Metodat {
 			String pass = input.nextLine();
 			
 			
-			String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt")).collect(Collectors.joining("\n"));
+			String contents = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt")).collect(Collectors.joining("\n"));
 			
 			String generatedPassword = null;
 	        try {
@@ -292,7 +291,7 @@ class Metodat {
 	            //This bytes[] has bytes in decimal format;
 	            //Convert it to hexadecimal format
 	            StringBuilder sb = new StringBuilder();
-	            for(int i=0; i< bytes.length ;i++)
+	            for(int i=0; i< bytes.length;i++)
 	            {
 	                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
 	            }
@@ -303,12 +302,25 @@ class Metodat {
 	        {
 	            e.printStackTrace();
 	        }
-		
-			if(generatedPassword.equals(contents)) {
-				FileWriter fileWriter = new FileWriter("////Users////lirimislami////Desktop////ds////tokenat////" + name + ".txt");
+			Boolean existsPas = FileExists(name, "C:/Users/Uran/Desktop/Projekti Siguri/password/", "Pas.txt");
+
+			if(generatedPassword.equals(contents)  && existsPas) {
+				Calendar calendar = Calendar.getInstance();
+      			//Returns current time in millis
+      			long timeMilli2 = calendar.getTimeInMillis() + 60000;//20 minuta
+      			String koha = String.valueOf(timeMilli2); 
+
+				FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/" + name + ".txt");
 				fileWriter.write(tokeni);
 				fileWriter.close();
+
+				FileWriter fileWriterkoha = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/koha/" + name + "Koha.txt");
+				fileWriterkoha.write(koha);
+				fileWriterkoha.close();
+
 				System.out.print("Token: " + tokeni);
+
+				
 			}else{
 				System.out.println("Gabim: Shfrytezuesi ose fjalekalimi i gabuar.");
 			}
@@ -319,56 +331,48 @@ class Metodat {
 			}
 
 		}
-	public void Status(String token) throws IOException {
+
+		public void Status(String token) throws IOException {
 			  File directoryPath = new File("C:/Users/Uran/Desktop/Projekti Siguri/tokenat");
 		      //List of all files and directories
 		      String contents[] = directoryPath.list();
 		      for(int i=0; i<contents.length; i++) {
-		         String contents1 = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/"+ contents[i]))
+		        String contents1 = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/"+ contents[i]))
 															.collect(Collectors.joining("\n"));
-				 if(contents1.equals(token)){
-				 	System.out.println("\nUser: " + contents[i].substring(0, contents[i].length() - 4) );break;
+
+				if(contents1.equals(token)){
+					Calendar calendar = Calendar.getInstance();
+      			    //Returns current time in millis
+      			    long timeMilli2 = calendar.getTimeInMillis();
+      			    String kohaTashme = String.valueOf(timeMilli2); 
+
+					String shfrytezuesi = "\nUser: " + contents[i].substring(0, contents[i].length() - 4);
+				 	System.out.println(shfrytezuesi);
+				 	String koha = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/koha/"+ 
+				 		contents[i].substring(0, contents[i].length() - 4) + "Koha.txt"))
+																			.collect(Collectors.joining("\n"));
+					long l = Long.parseLong(koha);  
+					DateFormat simple = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				 	
+					long o = Long.parseLong(kohaTashme);  
+
+				 	if(o < l){
+				 		System.out.println("Valid: PO");
+						System.out.println("Skadimi: "  + simple.format(l));	
+				 	}
+				 	else{
+				     	System.out.println("Valid: JO");
+				     	System.out.println("Skadimi: Koha ka skaduar");
+				 	}
+				 	break;
 				 }
-				 if(!contents1.equals(token)){
-					System.out.println("\nTokeni nuk eshte valid.");break;
+				 if(contents.length - 1 == i){
+					System.out.println("\nTokeni nuk eshte valid ose nuk ekziston shfrytezuesi.");
 				 }
 		      }
 						
 			
 		}
-
-		public void Export(String publicOrPrivat, String name) throws IOException {	
-		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
-				Boolean existsPublik = FileExists(name, Path, ".pub.xml");
-				if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
-					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////keys////" + name + ".pub.xml"
-							)).collect(Collectors.joining("\n"));   
-					
-		    		System.out.println("<RSAKeyValue>");
-		    		System.out.println("    <Modulus>" + contents.split("<string>")[1].split("</string>")[0] + "</Modulus>");
-		    		System.out.println("    <Exponent>" + contents.split("<string>")[2].split("</string>")[0] + "</Exponent>");
-		    		System.out.println("</RSAKeyValue>");
-		    	}
-				else if(!existsPublik && publicOrPrivat.equals("public"))
-		    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
-				else if(existsPrivat && publicOrPrivat.equals("private") && !publicOrPrivat.endsWith(".xml")) {
-					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////keys////" + name + ".xml"
-							)).collect(Collectors.joining("\n")); 
-					
-					System.out.println("<RSAKeyValue>");
-		    		System.out.println("    <Modulus>" + contents.split("<string>")[6].split("</string>")[0] + "</Modulus>");
-		    		System.out.println("    <Exponent>" + contents.split("<string>")[4].split("</string>")[0] + "</Exponent>");
-		    		System.out.println("    <P>" + contents.split("<string>")[7].split("</string>")[0] + "</P>");
-		    		System.out.println("    <Q>" + contents.split("<string>")[8].split("</string>")[0] + "</Q>");
-		    		System.out.println("    <DP>" + contents.split("<string>")[1].split("</string>")[0] + "</DP>");
-		    		System.out.println("    <DQ>" + contents.split("<string>")[2].split("</string>")[0] + "</DQ>");
-		    		System.out.println("    <InverseQ>" + contents.split("<string>")[5].split("</string>")[0] + "</InverseQ>");
-		    		System.out.println("    <D>" + contents.split("<string>")[3].split("</string>")[0] + "</D>");
-		    		System.out.println("</RSAKeyValue>");
-				}
-				else 
-		    		System.out.println("Gabim: Celesi privat '" + name + "' nuk ekziston.");
-		    }
 		
 		public void Export(String publicOrPrivat, String name, String file) throws IOException {	
 			Boolean existsPrivat = FileExists(name, "////Users////lirimislami////Desktop////ds////keys////", ".xml");
