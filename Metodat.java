@@ -461,7 +461,7 @@ class Metodat {
 			out.close();
 			System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'");
     }
-	    public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+	      public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
 	    	String enkodimiBaze64UTF8 = Base64.getEncoder()
                     .encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
@@ -491,7 +491,7 @@ class Metodat {
 			String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;
 			
 			if(file.endsWith(".txt")) {
-	    		FileOutputStream ruajFile = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////" + file));
+	    		FileOutputStream ruajFile = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////" + file));
 				XMLEncoder encoder = new XMLEncoder(ruajFile);
 				encoder.writeObject(ciphertext);
 				encoder.close();
@@ -502,7 +502,7 @@ class Metodat {
 				System.out.println(ciphertext);
     	}
 	    
-	    public void Write(String name,String message) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+	    public void Write(String name,String message, String sender, String token) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    													InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
 	    	Boolean existsPublik = FileExists(name, Path, ".pub.xml");
 			if(existsPublik){
@@ -531,7 +531,12 @@ class Metodat {
 				String enkodimiBase64DES = Base64.getEncoder()
 	                    .encodeToString(message.getBytes(StandardCharsets.UTF_8.toString()));
 		
-				String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;
+	            // base64(utf8(<sender>))
+				String senderUTF8sender = Base64.getEncoder()
+	                    .encodeToString(sender.getBytes(StandardCharsets.UTF_8.toString()));
+
+				String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES + "." + senderUTF8sender + 
+				"." + token;
 				System.out.println(ciphertext);
 			}
 			else
@@ -542,10 +547,30 @@ class Metodat {
 			if(!encryptedMessage.endsWith(".txt")){
 					String marrsi = encryptedMessage.split("\\.", 0)[0];
 		            String mesazhi = encryptedMessage.split("\\.", 0)[3];
-		            ReturnMessage(marrsi,mesazhi);
+		            String sender = encryptedMessage.split("\\.", 0)[4];
+
+		            byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
+			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
+
+			        byte[] dekodimiMesazhit = Base64.getDecoder().decode(mesazhi);
+			        String Mesazhi = new String(dekodimiMesazhit, StandardCharsets.UTF_8.name());
+
+			        byte[] dekodimiSender = Base64.getDecoder().decode(sender);
+			        String Sender = new String(dekodimiSender, StandardCharsets.UTF_8.name());
+
+			        Boolean exist = FileExists(Marrsi, Path, ".xml");
+			    if(exist) {
+			        System.out.println("\nMarresi: " + Marrsi);
+			        System.out.println("Mesazhi: " + Mesazhi);
+			        System.out.println("Sender: " + Sender);
+			        System.out.println("Nenshkrimi: ");
+			     	}
+			    else
+			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
+
 			}
 			else{
-					String contents = Files.lines(Paths.get("////Users////lirimislami////Desktop////ds////" +
+					String contents = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////" +
 								encryptedMessage)).collect(Collectors.joining("\n"));
 					contents = contents.split("<string>")[1].split("</string>")[0];
 					String marrsi = contents.split("\\.", 0)[0];
