@@ -17,6 +17,8 @@ public class Main {
         K.writeToFile("RSA/publicKey", K.getPublicKey().getEncoded());
         K.writeToFile("RSA/privateKey", K.getPrivateKey().getEncoded());
 
+        // Faza e pare
+
         if("morse-code".equals(args[0]) && args.length == 3){
             if("encode".equals(args[1])){
                 if(args[2].matches("^[a-zA-Z0-9 ]+"))
@@ -64,7 +66,7 @@ public class Main {
                 System.out.println("Keni shenuar gabim. Lejohen vetem shkronjat, numrat dhe . _");
         }
         else if(args[0].equals("delete-user") && args.length == 2) 
-            K.Delete(args[1]);
+                K.Delete(args[1]);
         else if(args[0].equals("export-key") && args.length == 3) {
                 K.Export(args[1], args[2]);
         }
@@ -78,17 +80,14 @@ public class Main {
                 K.Import(args[1],args[2]);
         }
       
-        else if(args[0].equals("write-message") && args.length == 3) 
-                K.Write(args[1], args[2]);
+        else if(args[0].equals("write-message") && args.length == 5) 
+                K.Write(args[1], args[2],args[3],args[4]);
 
         else if(args[0].equals("write-message") && args.length == 4) 
                 K.Write(args[1], args[2],args[3]);
 
         else if(args[0].equals("read-message") && args.length == 2)
             K.Read_Message(args[1]);
-        
-        // Faza e trete
-                             
         else if(args[0].equals("login") && args.length == 2)
             K.Login(args[1]);
         else if(args[0].equals("status") && args.length == 2)
