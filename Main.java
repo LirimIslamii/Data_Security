@@ -99,10 +99,13 @@ public class Main {
                                       + "\t3.Per Kodin FourSquare shtyp -> four-square encrypt | decrypt <key1> <key2> <text>\n"
                                       + "\t4.Komanda create-user <name>\n"
                                       + "\t5.Komanda delete-user <name>\n"
-                                      + "\t6.Komanda export-key <public | private> <name> [file]\n"
-                                      + "\t7.Komanda import-key <name> <path>\n"
-                                      + "\t8.Komanda write-message <name> <message> [file]\n"
-                                      + "\t9.Komanda read-message <encrypted-message>\n");
+                                      + "\t6.Komanda login <name>\n"
+                                      + "\t7.Komanda status <token>\n"
+                                      + "\t8.Komanda export-key <public | private> <name> [file]\n"
+                                      + "\t9.Komanda import-key <name> <path>\n"
+                                      + "\t10.Komanda write-message <name> <message> [file]\n"
+                                      + "\t11.Komanda write-message <name> <message> --sender <token>\n"
+                                      + "\t12.Komanda read-message <encrypted-message>\n");
                 System.exit(0);
         }
     }
