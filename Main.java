@@ -2,18 +2,30 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import java.util.Base64;    
+import javax.crypto.Cipher;  
+import javax.crypto.KeyGenerator;   
+import javax.crypto.SecretKey; 
+
 public class Main {
-  public static void main(String[] args)throws IOException, LineUnavailableException, InterruptedException, 
-                            ArrayIndexOutOfBoundsException, NoSuchAlgorithmException, InvalidKeyException, 
-                            NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    static Cipher cipher;  
+  public static void main(String[] args)throws Exception {
         Morse_Code M = new Morse_Code();
         Tap_Code T = new Tap_Code();
         Four_Code F = new Four_Code();
         Metodat K = new Metodat();
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
+        keyGenerator.init(56);
+        SecretKey secretKey = keyGenerator.generateKey();
+
+        cipher = Cipher.getInstance("DES"); 
         K.writeToFile("RSA/publicKey", K.getPublicKey().getEncoded());
         K.writeToFile("RSA/privateKey", K.getPrivateKey().getEncoded());
 
@@ -80,8 +92,10 @@ public class Main {
                 K.Import(args[1],args[2]);
         }
       
-        else if(args[0].equals("write-message") && args.length == 5) 
+        else if(args[0].equals("write-message") && args.length == 5) {
                 K.Write(args[1], args[2],args[3],args[4]);
+        }
+                
 
         else if(args[0].equals("write-message") && args.length == 4) 
                 K.Write(args[1], args[2],args[3]);
@@ -99,13 +113,10 @@ public class Main {
                                       + "\t3.Per Kodin FourSquare shtyp -> four-square encrypt | decrypt <key1> <key2> <text>\n"
                                       + "\t4.Komanda create-user <name>\n"
                                       + "\t5.Komanda delete-user <name>\n"
-                                      + "\t6.Komanda login <name>\n"
-                                      + "\t7.Komanda status <token>\n"
-                                      + "\t8.Komanda export-key <public | private> <name> [file]\n"
-                                      + "\t9.Komanda import-key <name> <path>\n"
-                                      + "\t10.Komanda write-message <name> <message> [file]\n"
-                                      + "\t11.Komanda write-message <name> <message> --sender <token>\n"
-                                      + "\t12.Komanda read-message <encrypted-message>\n");
+                                      + "\t6.Komanda export-key <public | private> <name> [file]\n"
+                                      + "\t7.Komanda import-key <name> <path>\n"
+                                      + "\t8.Komanda write-message <name> <message> [file]\n"
+                                      + "\t9.Komanda read-message <encrypted-message>\n");
                 System.exit(0);
         }
     }
