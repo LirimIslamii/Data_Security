@@ -8,6 +8,9 @@ import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -19,34 +22,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.nio.file.*;
-import static java.nio.file.StandardCopyOption.*;
 import java.net.*;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.Calendar;
+import java.text.DateFormat; 
+import java.text.SimpleDateFormat; 
 
 class Metodat {
     private PrivateKey privateKey;
     private PublicKey publicKey;
-    private static String Path = "////Users////lirimislami////Desktop////ds////keys////";
-	private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
-	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
+    private static String Path = "C:////Users////Uran////Desktop////Projekti Siguri////keys////";
 
     KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
     KeyPair keyPair = keyPairGen.genKeyPair();
     RSAPrivateCrtKey privKey = (RSAPrivateCrtKey) keyPair.getPrivate();
     RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();	
+    
 	Base64.Encoder encoder = Base64.getEncoder();
 	    
     BigInteger n = ((RSAKey) privKey).getModulus();
@@ -57,19 +51,19 @@ class Metodat {
     BigInteger dq = ((RSAPrivateCrtKey) privKey).getPrimeExponentQ();
     BigInteger inverseQ = ((RSAPrivateCrtKey) privKey).getCrtCoefficient();
     BigInteger d = ((RSAPrivateKey) privKey).getPrivateExponent();
-        
-	String N = encoder.encodeToString(n.toByteArray());
-	String E = encoder.encodeToString(e.toByteArray());
-	String P = encoder.encodeToString(p.toByteArray());
-	String Q = encoder.encodeToString(q.toByteArray());
-	String DP = encoder.encodeToString(dp.toByteArray());
-	String DQ = encoder.encodeToString(dq.toByteArray());
-	String INVERSEQ = encoder.encodeToString(inverseQ.toByteArray());
-	String D = encoder.encodeToString(d.toByteArray());
+	
+	String N = n.toString();
+	String E = e.toString();
+	String P = p.toString();
+	String Q = q.toString();
+	String DP = dp.toString();
+	String DQ = dq.toString();
+	String INVERSEQ = inverseQ.toString();
+	String D = d.toString();
 
     public Metodat() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(1024);
+        keyGen.initialize(2048);
         KeyPair pair = keyGen.generateKeyPair();
         this.privateKey = pair.getPrivate();
         this.publicKey = pair.getPublic();
@@ -129,7 +123,7 @@ class Metodat {
 			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
 			}
 	
-			private static boolean checkString(String input) {
+	private static boolean checkString(String input) {
 			    String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
 			    char currentCharacter;
 			    boolean numberPresent = false;
@@ -165,7 +159,7 @@ class Metodat {
 			else {
 				 
 			    	Person celsiPrivat = new Person(N,E,P,Q,DP,DQ,INVERSEQ,D);
-			        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
+			        FileOutputStream ruajCelsinPrivat = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
 			        																	+ name +".xml"));
 					XMLEncoder enkoderiCelsitPrivat = new XMLEncoder(ruajCelsinPrivat);
 					enkoderiCelsitPrivat.writeObject(celsiPrivat);
@@ -173,14 +167,14 @@ class Metodat {
 					ruajCelsinPrivat.close();
 					
 			        Person celsiPublik = new Person(N,E);
-					FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////"
+					FileOutputStream ruajCelsinPublik = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////"
 																			+ name +".pub.xml"));
 					XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
 					enkoderiCelsitPublik.writeObject(celsiPublik);
 					enkoderiCelsitPublik.close();
 					ruajCelsinPublik.close();
 					
-					FileWriter fileWriter = new FileWriter("////Users////lirimislami////Desktop////ds////users////" + name + ".txt");
+					FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
     				fileWriter.write(name);
    					fileWriter.close();
 
@@ -207,7 +201,7 @@ class Metodat {
 			            e.printStackTrace();
 			        }
 				 
-			        FileWriter fileWriter2 = new FileWriter("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt");
+			        FileWriter fileWriter2 = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
     				fileWriter2.write(generatedPassword);
    					fileWriter2.close();
 				  
@@ -235,11 +229,18 @@ class Metodat {
 		    		celsiPublik.delete();
 		    		celsiPrivat.delete();
 
-		    		File password = new File("////Users////lirimislami////Desktop////ds////passwords////" + name + "Pas.txt");
+		    		File password = new File("C:/Users/Uran/Desktop/Projekti Siguri/password/" + name + "Pas.txt");
 		    		password.delete();
 
-		    		File user = new File("////Users////lirimislami////Desktop////ds////users////" + name + ".txt");
+		    		File user = new File("C:/Users/Uran/Desktop/Projekti Siguri/users/" + name + ".txt");
 		    		user.delete();
+
+		    		File tokeni = new File("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/" + name + ".txt");
+		    		tokeni.delete();
+
+		    		File koha = new File("C:/Users/Uran/Desktop/Projekti Siguri/koha/" + name + "Koha.txt");
+		    		koha.delete();
+
 
 		    		System.out.println("Eshte larguar shfrytezuesi '" + name + "'");
 		    		System.out.println("Eshte larguar celesi privat 'keys/" + name + ".xml'");
@@ -258,21 +259,54 @@ class Metodat {
 		    	else 
 		    		System.out.println("Gabim: Celesi '" + name + "' nuk ekziston.");
 		    }
+		private static final String BC_PROV_ALGORITHM_SHA1RSA = "SHA1withRSA";
+		
+		public static byte[] signBySoft(PrivateKey privateKey, byte[] data)
+				throws Exception {
+			byte[] result = null;
+			Signature st = Signature.getInstance(BC_PROV_ALGORITHM_SHA1RSA);
+			st.initSign(privateKey);
+			st.update(data);
+			result = st.sign();
+			return result;
+		}
+		public static boolean validateSignBySoft(PublicKey publicKey,
+				byte[] signData, byte[] srcData) throws Exception {
+			Signature st = Signature.getInstance(BC_PROV_ALGORITHM_SHA1RSA);
+			st.initVerify(publicKey);
+			st.update(srcData);
+			return st.verify(signData);
+		}
+		
+		public static PublicKey bigIntegerToPublicKey(BigInteger e, BigInteger m) throws InvalidKeySpecException, NoSuchAlgorithmException  {
+		    RSAPublicKeySpec keySpec = new RSAPublicKeySpec(m, e);
+		    KeyFactory fact = KeyFactory.getInstance("RSA");
+		    PublicKey pubKey = fact.generatePublic(keySpec);
+		    return pubKey;
+		}
 
-		public void Login(String name) throws IOException{
+		public static PrivateKey bigIntegerToPrivateKey(BigInteger e, BigInteger m) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		    RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(m, e);
+		    KeyFactory fact = KeyFactory.getInstance("RSA");
+		    PrivateKey privKey = fact.generatePrivate(keySpec);
+		    return privKey;
+		}
+
+		public void Login(String name) throws Exception{
 			Boolean exists = FileExists(name, Path, ".xml");
 
-			if(exists){
-			String contents1 = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
-					)).collect(Collectors.joining("\n")); 
-			
-			String c = contents1.split("<string>")[6].split("</string>")[0] + "</Modulus>" +
-			contents1.split("<string>")[4].split("</string>")[0] + "</Exponent>";
-		   
-			byte[] randomBytes = c.getBytes();
-		    secureRandom.nextBytes(randomBytes);
-		    
-		    String tokeni =  base64Encoder.encodeToString(randomBytes);
+			if(exists){				
+				String contentsPrivate = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
+						)).collect(Collectors.joining("\n")); 
+				String privateExponent = contentsPrivate.split("<string>")[3].split("</string>")[0];
+				String modulus = contentsPrivate.split("<string>")[6].split("</string>")[0];
+						
+				BigInteger m = new BigInteger(modulus);
+				BigInteger d = new BigInteger(privateExponent);
+			    		
+				byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
+		     
+		        String tokeni = a.toString();
 
 			System.out.print("Jepni fjalekalimin: ");
 			String pass = input.nextLine();
@@ -332,7 +366,7 @@ class Metodat {
 
 		}
 
-		public void Status(String token) throws IOException {
+		public void Status(String token) throws NoSuchAlgorithmException, InvalidKeySpecException, Exception {
 			  File directoryPath = new File("C:/Users/Uran/Desktop/Projekti Siguri/tokenat");
 		      //List of all files and directories
 		      String contents[] = directoryPath.list();
@@ -346,7 +380,7 @@ class Metodat {
       			    long timeMilli2 = calendar.getTimeInMillis();
       			    String kohaTashme = String.valueOf(timeMilli2); 
 
-					String shfrytezuesi = "\nUser: " + contents[i].substring(0, contents[i].length() - 4);
+					String shfrytezuesi = "User: " + contents[i].substring(0, contents[i].length() - 4);
 				 	System.out.println(shfrytezuesi);
 				 	String koha = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/koha/"+ 
 				 		contents[i].substring(0, contents[i].length() - 4) + "Koha.txt"))
@@ -355,8 +389,25 @@ class Metodat {
 					DateFormat simple = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				 	
 					long o = Long.parseLong(kohaTashme);  
-
-				 	if(o < l){
+	
+					String nami = contents[i].substring(0, contents[i].length() - 4);
+					String contentsPublic = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + nami + ".pub.xml"
+							)).collect(Collectors.joining("\n")); 
+					String modulus = contentsPublic.split("<string>")[2].split("</string>")[0];
+					String publicExponent = contentsPublic.split("<string>")[1].split("</string>")[0];
+					
+					String contentsPrivate = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + nami + ".xml"
+							)).collect(Collectors.joining("\n")); 
+					String privateExponent = contentsPrivate.split("<string>")[3].split("</string>")[0];
+							
+					BigInteger e = new BigInteger(publicExponent);
+					BigInteger m = new BigInteger(modulus);
+					BigInteger d = new BigInteger(privateExponent);
+				    		
+					byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
+					boolean on = validateSignBySoft(bigIntegerToPublicKey(e,m), a, "abc".getBytes());
+				    
+				 	if(o < l && on == true){
 				 		System.out.println("Valid: PO");
 						System.out.println("Skadimi: "  + simple.format(l));	
 				 	}
@@ -373,13 +424,46 @@ class Metodat {
 						
 			
 		}
+
+		public void Export(String publicOrPrivat, String name) throws IOException {	
+		    	Boolean existsPrivat = FileExists(name, Path, ".xml");
+				Boolean existsPublik = FileExists(name, Path, ".pub.xml");
+				if(existsPublik && publicOrPrivat.equals("public") && !name.endsWith(".pub.xml")) {
+					String contents = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".pub.xml"
+							)).collect(Collectors.joining("\n"));   
+					
+		    		System.out.println("<RSAKeyValue>");
+		    		System.out.println("    <Modulus>" + contents.split("<string>")[1].split("</string>")[0] + "</Modulus>");
+		    		System.out.println("    <Exponent>" + contents.split("<string>")[2].split("</string>")[0] + "</Exponent>");
+		    		System.out.println("</RSAKeyValue>");
+		    	}
+				else if(!existsPublik && publicOrPrivat.equals("public"))
+		    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
+				else if(existsPrivat && publicOrPrivat.equals("private") && !publicOrPrivat.endsWith(".xml")) {
+					String contents = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
+							)).collect(Collectors.joining("\n")); 
+					
+					System.out.println("<RSAKeyValue>");
+		    		System.out.println("    <Modulus>" + contents.split("<string>")[6].split("</string>")[0] + "</Modulus>");
+		    		System.out.println("    <Exponent>" + contents.split("<string>")[4].split("</string>")[0] + "</Exponent>");
+		    		System.out.println("    <P>" + contents.split("<string>")[7].split("</string>")[0] + "</P>");
+		    		System.out.println("    <Q>" + contents.split("<string>")[8].split("</string>")[0] + "</Q>");
+		    		System.out.println("    <DP>" + contents.split("<string>")[1].split("</string>")[0] + "</DP>");
+		    		System.out.println("    <DQ>" + contents.split("<string>")[2].split("</string>")[0] + "</DQ>");
+		    		System.out.println("    <InverseQ>" + contents.split("<string>")[5].split("</string>")[0] + "</InverseQ>");
+		    		System.out.println("    <D>" + contents.split("<string>")[3].split("</string>")[0] + "</D>");
+		    		System.out.println("</RSAKeyValue>");
+				}
+				else 
+		    		System.out.println("Gabim: Celesi privat '" + name + "' nuk ekziston.");
+		    }
 		
 		public void Export(String publicOrPrivat, String name, String file) throws IOException {	
-			Boolean existsPrivat = FileExists(name, "////Users////lirimislami////Desktop////ds////keys////", ".xml");
-			Boolean existsPublik = FileExists(name, "////Users////lirimislami////Desktop////ds////keys////", ".pub.xml");
+			Boolean existsPrivat = FileExists(name, "C:////Users////Uran////Desktop////Projekti Siguri////keys////", ".xml");
+			Boolean existsPublik = FileExists(name, "C:////Users////Uran////Desktop////Projekti Siguri////keys////", ".pub.xml");
 			if(existsPublik && publicOrPrivat.equals("public") && file.endsWith(".pub.xml")) {
-				File source = new File("////Users////lirimislami////Desktop////ds////keys////" + name + ".pub.xml");
-				File destination = new File("////Users////lirimislami////Desktop////ds////keys////" + file);
+				File source = new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".pub.xml");
+				File destination = new File("C:////Users////Uran////Desktop////Projekti Siguri////" + file);
 				copyFile(source, destination);
 				System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + file + "'");
 			}
@@ -387,8 +471,8 @@ class Metodat {
 	    		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
 
 			else if(existsPrivat && publicOrPrivat.equals("private") && file.endsWith(".xml")) {
-				File source = new File("////Users////lirimislami////Desktop////ds////keys////" + name + ".xml");
-				File destination = new File("////Users////lirimislami////Desktop////ds////keys////" + file);
+				File source = new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml");
+				File destination = new File("C:////Users////Uran////Desktop////Projekti Siguri////" + file);
 				copyFile(source, destination);
 				System.out.println("Celesi privat u ruajt ne fajllin '" + file + "'.");
 			}
@@ -404,7 +488,7 @@ class Metodat {
 					if(emriFajllit.endsWith(".pub.xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
-					        Paths.get("////Users////lirimislami////Desktop////ds////keys////" + emriFajllit)); 
+					        Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + emriFajllit)); 
 					  
 					        if(temp != null) 
 					            System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'."); 
@@ -418,7 +502,7 @@ class Metodat {
 					if(emriFajllit.endsWith(".xml")) {
 					Path temp = Files.move 
 					        (Paths.get(path),  
-					        Paths.get("////Users////lirimislami////Desktop////ds////keys////" + name + ".xml")); 
+					        Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml")); 
 							Person celsiPublik = new Person(N,E);
 							FileOutputStream ruajCelsinPublik = new FileOutputStream(new File(Path + name + ".pub.xml"));
 							XMLEncoder enkoderiCelsitPublik = new XMLEncoder(ruajCelsinPublik);
@@ -454,14 +538,14 @@ class Metodat {
 	                response.append(inputLine);
 	            }
 	        }
-		    FileOutputStream out = new FileOutputStream(new File("////Users////lirimislami////Desktop////ds////keys////" + name + ".pub.xml"));
+		    FileOutputStream out = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".pub.xml"));
 			XMLEncoder encoder = new XMLEncoder(out);
 			encoder.writeObject(response.toString());
 			encoder.close();
 			out.close();
 			System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'");
     }
-	      public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+	    public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
 	    	String enkodimiBaze64UTF8 = Base64.getEncoder()
                     .encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
@@ -524,16 +608,17 @@ class Metodat {
 				String rsa = encryptedData.toString();
 				String enkodimiBase64RSA = Base64.getEncoder()
 	                    .encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
-				
-				SecretKey key = KeyGenerator.getInstance("DES").generateKey();
-				Cipher cipher = Cipher.getInstance("DES");
-				cipher.init(Cipher.ENCRYPT_MODE, key);			
+							
 				String enkodimiBase64DES = Base64.getEncoder()
 	                    .encodeToString(message.getBytes(StandardCharsets.UTF_8.toString()));
 		
 	            // base64(utf8(<sender>))
 				String senderUTF8sender = Base64.getEncoder()
 	                    .encodeToString(sender.getBytes(StandardCharsets.UTF_8.toString()));
+
+	            // base64(signature(des(<message>)))
+
+
 
 				String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES + "." + senderUTF8sender + 
 				"." + token;
