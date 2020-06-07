@@ -569,28 +569,34 @@ class Metodat {
     	   System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'");
     }
 
+     public static String WriteMessage(String name,String message) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, IOException {
+       String enkodimiBaze64UTF8 = Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
+     	
+  	   SecureRandom sr = new SecureRandom(); //Krijon nje random te sigurt
+  	   byte [] bajtaRandomIV = new byte[8];  //Krijon nje array prej 8 bajt
+  	   sr.nextBytes(bajtaRandomIV); 		  //Krijon bajta random qe perdoren prej iv
+  	   String iv = bajtaRandomIV.toString();
+  	   String enkodimiBase64 = Base64.getEncoder().encodeToString(iv.getBytes(StandardCharsets.UTF_8.toString()));
+  	   
+  	   Metodat rsaObj = new Metodat();
+      	   byte [] bajtaRandomKEY = new byte[8]; //Krijon nje array prej 8 bajt
+      	   sr.nextBytes(bajtaRandomKEY); 	      //Krijon bajta random qe perdoren prej KEY
+      	   String KEY = bajtaRandomKEY.toString();
+     	   byte[] encryptedData = rsaObj.encryptData(KEY);
+  	   String rsa = encryptedData.toString();
+  	   String enkodimiBase64RSA = Base64.getEncoder().encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
+  					
+  	   Metodat td= new Metodat();
+  	   String enkodimiBase64DES = td.encrypt(message);
+
+  	   return enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;
+    }
+
     public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 	    				InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException {	
 	   
-	   String enkodimiBaze64UTF8 = Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
-    	
-	   SecureRandom sr = new SecureRandom(); //Krijon nje random te sigurt
-	   byte [] bajtaRandomIV = new byte[8];  //Krijon nje array prej 8 bajt
-	   sr.nextBytes(bajtaRandomIV); 		  //Krijon bajta random qe perdoren prej iv
-	   String iv = bajtaRandomIV.toString();
-	   String enkodimiBase64 = Base64.getEncoder().encodeToString(iv.getBytes(StandardCharsets.UTF_8.toString()));
+    	String ciphertext = WriteMessage(name, message);
 	   
-	   Metodat rsaObj = new Metodat();
-    	   byte [] bajtaRandomKEY = new byte[8]; //Krijon nje array prej 8 bajt
-    	   sr.nextBytes(bajtaRandomKEY); 	      //Krijon bajta random qe perdoren prej KEY
-    	   String KEY = bajtaRandomKEY.toString();
-   	   byte[] encryptedData = rsaObj.encryptData(KEY);
-	   String rsa = encryptedData.toString();
-	   String enkodimiBase64RSA = Base64.getEncoder().encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
-					
-	   String enkodimiBase64DES = "";
-
-	   String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;	
 	   if(file.endsWith(".txt")) {
 	   	FileOutputStream ruajFile = new FileOutputStream(new File("C:////Users////Uran////Desktop////Projekti Siguri////" + file));
 		XMLEncoder encoder = new XMLEncoder(ruajFile);
@@ -603,51 +609,43 @@ class Metodat {
 		System.out.println(ciphertext);
     }
 	    
-    public void Write(String name,String message, String sender, String token) throws Exception {	
+    public void Write(String name,String message) throws Exception {	
 	   Boolean existsPublik = FileExists(name, Path, ".pub.xml");
  	   if(existsPublik){
-	   	String enkodimiBaze64UTF8 = Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
-	    	
-		SecureRandom sr = new SecureRandom(); //Krijon nje random te sigurt
-		byte [] bajtaRandomIV = new byte[8];  //Krijon nje array prej 8 bajt
-		sr.nextBytes(bajtaRandomIV); 		  //Krijon bajta random qe perdoren prej iv
-		String iv = bajtaRandomIV.toString();
-		String enkodimiBase64 = Base64.getEncoder().encodeToString(iv.getBytes(StandardCharsets.UTF_8.toString()));
-		    	
-		Metodat rsaObj = new Metodat();
-	    	byte [] bajtaRandomKEY = new byte[8]; //Krijon nje array prej 8 bajt
-	    	sr.nextBytes(bajtaRandomKEY); 	      //Krijon bajta random qe perdoren prej KEY
-	    	String KEY = bajtaRandomKEY.toString();
-		byte[] encryptedData = rsaObj.encryptData(KEY);
-		String rsa = encryptedData.toString();
-		String enkodimiBase64RSA = Base64.getEncoder().encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
+ 	    String ciphertext = WriteMessage(name, message);
 
-		// base64(des(<message>))
-		Metodat td= new Metodat();
-		String enkodimiBase64DES = td.encrypt(message);
-				
-	        // base64(utf8(<sender>))
-		String senderUTF8sender = Base64.getEncoder().encodeToString(sender.getBytes(StandardCharsets.UTF_8.toString()));
-
-	        // base64(signature(des(<message>)))
-		String contentsPrivate = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
-						)).collect(Collectors.joining("\n")); 
-		String privateExponent = contentsPrivate.split("<string>")[3].split("</string>")[0];
-		String modulus = contentsPrivate.split("<string>")[6].split("</string>")[0];
-		BigInteger m = new BigInteger(modulus);
-		BigInteger d = new BigInteger(privateExponent);
-		byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
-		String tokeni = a.toString();
-		        
-		String SignatureEnkodimiBase64DES = Base64.getEncoder().encodeToString(tokeni.getBytes(StandardCharsets.UTF_8.toString()));;
-				
-		String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES + "." + senderUTF8sender + 
-		"." + SignatureEnkodimiBase64DES;
 		System.out.println(ciphertext);
  	   }
  	   else
 		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
     }
+
+    public void Write(String name,String message, String sender, String token) throws Exception {	
+ 	   Boolean existsPublik = FileExists(name, Path, ".pub.xml");
+  	   if(existsPublik){
+  		 String ciphertext1 = WriteMessage(name, message);
+ 				
+ 	        // base64(utf8(<sender>))
+ 		String senderUTF8sender = Base64.getEncoder().encodeToString(sender.getBytes(StandardCharsets.UTF_8.toString()));
+
+ 	        // base64(signature(des(<message>)))
+ 		String contentsPrivate = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
+ 						)).collect(Collectors.joining("\n")); 
+ 		String privateExponent = contentsPrivate.split("<string>")[3].split("</string>")[0];
+ 		String modulus = contentsPrivate.split("<string>")[6].split("</string>")[0];
+ 		BigInteger m = new BigInteger(modulus);
+ 		BigInteger d = new BigInteger(privateExponent);
+ 		byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), message.getBytes());
+ 		        
+ 		String SignatureEnkodimiBase64DES = Base64.getEncoder().encodeToString(a);
+
+ 		String ciphertext = ciphertext1 + "." + senderUTF8sender + "." + SignatureEnkodimiBase64DES;
+ 		System.out.println("\n" + ciphertext);
+  	   }
+  	   else
+ 		System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
+     }
+    
 
     public void Read_Message(String encryptedMessage) throws Exception {
  	   if(!encryptedMessage.endsWith(".txt")){
