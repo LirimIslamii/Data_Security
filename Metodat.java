@@ -719,4 +719,5 @@ class Metodat {
     		else {
 		     	System.out.println("Keni shenuar gabim encrypted message.");
     		}
-			
+    }		
+    }
