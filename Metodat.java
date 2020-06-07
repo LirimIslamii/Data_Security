@@ -9,15 +9,17 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
@@ -61,12 +63,64 @@ class Metodat {
 	String INVERSEQ = inverseQ.toString();
 	String D = d.toString();
 
-    public Metodat() throws NoSuchAlgorithmException {
+	 private SecretKey mydes;
+	 
+	 public SecretKey getSecretKey() {
+	        return mydes;
+	 }
+
+	    private static final String UNICODE_FORMAT = "UTF8";
+	    public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
+	    private KeySpec ks;
+	    private SecretKeyFactory skf;
+	    private Cipher cipher;
+	    byte[] arrayBytes;
+	    private String myEncryptionKey;
+	    private String myEncryptionScheme;
+	    SecretKey key;
+
+	    public String encrypt(String unencryptedString) {
+	        String encryptedString = null;
+	        try {        	
+	            cipher.init(Cipher.ENCRYPT_MODE, key);
+	            byte[] plainText = unencryptedString.getBytes(UNICODE_FORMAT);
+	            byte[] encryptedText = cipher.doFinal(plainText);
+	            encryptedString = new String(Base64.getEncoder().encodeToString(encryptedText));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return encryptedString;
+	    }
+
+
+	    public String decrypt(String encryptedString) {
+	        String decryptedText=null;
+	        try {
+	            cipher.init(Cipher.DECRYPT_MODE, key);
+	            byte[] encryptedText = Base64.getDecoder().decode(encryptedString);
+	            byte[] plainText = cipher.doFinal(encryptedText);
+	            decryptedText= new String(plainText);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return decryptedText;
+	    }
+
+	 
+    public Metodat() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, InvalidKeySpecException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(2048);
         KeyPair pair = keyGen.generateKeyPair();
         this.privateKey = pair.getPrivate();
         this.publicKey = pair.getPublic();
+        
+        myEncryptionKey = "ThisIsSpartaThisIsSparta";
+        myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
+        arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+        ks = new DESedeKeySpec(arrayBytes);
+        skf = SecretKeyFactory.getInstance(myEncryptionScheme);
+        cipher = Cipher.getInstance(myEncryptionScheme);
+        key = skf.generateSecret(ks);
     }
 
     public void writeToFile(String path, byte[] key) throws IOException {
@@ -545,8 +599,9 @@ class Metodat {
 			out.close();
 			System.out.println("Celesi publik u ruajt ne fajllin 'keys/" + name + ".pub.xml'");
     }
+		
 	    public void Write(String name,String message,String file) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
-	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
+	    															InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException {	
 	    	String enkodimiBaze64UTF8 = Base64.getEncoder()
                     .encodeToString(name.getBytes(StandardCharsets.UTF_8.toString()));
     	
@@ -566,11 +621,9 @@ class Metodat {
 			String enkodimiBase64RSA = Base64.getEncoder()
                     .encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
 			
-			SecretKey key = KeyGenerator.getInstance("DES").generateKey();
-			Cipher cipher = Cipher.getInstance("DES");
-			cipher.init(Cipher.ENCRYPT_MODE, key);			
-			String enkodimiBase64DES = Base64.getEncoder()
-                    .encodeToString(message.getBytes(StandardCharsets.UTF_8.toString()));
+					
+			String enkodimiBase64DES = "";
+
 	
 			String ciphertext = enkodimiBaze64UTF8 + "." + enkodimiBase64 + "." + enkodimiBase64RSA + "." + enkodimiBase64DES;
 			
@@ -586,8 +639,7 @@ class Metodat {
 				System.out.println(ciphertext);
     	}
 	    
-	    public void Write(String name,String message, String sender, String token) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
-	    													InvalidKeyException, IllegalBlockSizeException, BadPaddingException {	
+	    public void Write(String name,String message, String sender, String token) throws Exception {	
 	    	Boolean existsPublik = FileExists(name, Path, ".pub.xml");
 			if(existsPublik){
 				String enkodimiBaze64UTF8 = Base64.getEncoder()
@@ -608,10 +660,11 @@ class Metodat {
 				String rsa = encryptedData.toString();
 				String enkodimiBase64RSA = Base64.getEncoder()
 	                    .encodeToString(rsa.getBytes(StandardCharsets.UTF_8.toString()));
-							
-				String enkodimiBase64DES = Base64.getEncoder()
-	                    .encodeToString(message.getBytes(StandardCharsets.UTF_8.toString()));
-		
+
+				Metodat td= new Metodat();
+
+		        String enkodimiBase64DES = td.encrypt(message);
+				
 	            // base64(utf8(<sender>))
 				String senderUTF8sender = Base64.getEncoder()
 	                    .encodeToString(sender.getBytes(StandardCharsets.UTF_8.toString()));
@@ -628,7 +681,7 @@ class Metodat {
 				System.out.println("Gabim: Celesi publik '" + name + "' nuk ekziston.");
     	}
 
-	    public void Read_Message(String encryptedMessage) throws UnsupportedEncodingException, IOException {
+	    public void Read_Message(String encryptedMessage) throws Exception {
 			if(!encryptedMessage.endsWith(".txt")){
 					String marrsi = encryptedMessage.split("\\.", 0)[0];
 		            String mesazhi = encryptedMessage.split("\\.", 0)[3];
@@ -637,16 +690,18 @@ class Metodat {
 		            byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
 			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
 
-			        byte[] dekodimiMesazhit = Base64.getDecoder().decode(mesazhi);
-			        String Mesazhi = new String(dekodimiMesazhit, StandardCharsets.UTF_8.name());
-
 			        byte[] dekodimiSender = Base64.getDecoder().decode(sender);
 			        String Sender = new String(dekodimiSender, StandardCharsets.UTF_8.name());
+			       
+			        Metodat td= new Metodat();
+
+			        String decrypted = td.decrypt(mesazhi);
+
 
 			        Boolean exist = FileExists(Marrsi, Path, ".xml");
 			    if(exist) {
 			        System.out.println("\nMarresi: " + Marrsi);
-			        System.out.println("Mesazhi: " + Mesazhi);
+			        System.out.println("Mesazhi: " + decrypted);
 			        System.out.println("Sender: " + Sender);
 			        System.out.println("Nenshkrimi: ");
 			     	}
