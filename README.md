@@ -176,3 +176,4 @@ REFERENCAT:
   https://stackoverflow.com/questions/10303767/encrypt-and-decrypt-in-java
   https://www.programcreek.com/java-api-examples/?class=java.security.Signature&method=sign  
   https://www.programcreek.com/java-api-examples/?code=Javen205/IJPay/IJPay-master/src/main/java/com/jpay/unionpay/SecureUtil.java
+  https://www.baeldung.com/java-count-chars
