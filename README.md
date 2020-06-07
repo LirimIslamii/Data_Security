@@ -173,3 +173,6 @@ REFERENCAT:
 REFERENCAT:
   
   https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
+  https://stackoverflow.com/questions/10303767/encrypt-and-decrypt-in-java
+  https://www.programcreek.com/java-api-examples/?class=java.security.Signature&method=sign  
+  https://www.programcreek.com/java-api-examples/?code=Javen205/IJPay/IJPay-master/src/main/java/com/jpay/unionpay/SecureUtil.java
