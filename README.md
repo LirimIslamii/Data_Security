@@ -235,7 +235,7 @@ Ekzekutimi i Programit :
 
 ➤ Për komandën status:
    
-         ✸ java Main login <Token>
+         ✸ java Main status <Token>
          
 <img width="968" alt="status" src="https://user-images.githubusercontent.com/61246827/83980287-b3405800-a914-11ea-91a5-6f924428568a.png">
 
