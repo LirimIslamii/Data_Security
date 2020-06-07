@@ -77,8 +77,9 @@ public class Main {
         else if(args[0].equals("write-message") && args.length == 5) {
                 K.Write(args[1], args[2],args[3],args[4]);
         }
-                
-
+        else if(args[0].equals("write-message") && args.length == 3) {
+            K.Write(args[1], args[2]);
+        }
         else if(args[0].equals("write-message") && args.length == 4) 
                 K.Write(args[1], args[2],args[3]);
 
@@ -103,6 +104,3 @@ public class Main {
         }
     }
 }
-
-
-
