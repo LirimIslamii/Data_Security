@@ -177,3 +177,4 @@ REFERENCAT:
   https://www.programcreek.com/java-api-examples/?class=java.security.Signature&method=sign  
   https://www.programcreek.com/java-api-examples/?code=Javen205/IJPay/IJPay-master/src/main/java/com/jpay/unionpay/SecureUtil.java
   https://www.baeldung.com/java-count-chars
+  http://www.cse.chalmers.se/edu/year/2018/course/TDA602/Eraserlab/pwdmasking.html
