@@ -625,70 +625,98 @@ class Metodat {
     }
 
     public void Read_Message(String encryptedMessage) throws Exception {
- 	   if(!encryptedMessage.endsWith(".txt")){
-	   	String marrsi = encryptedMessage.split("\\.", 0)[0];
-		String mesazhi = encryptedMessage.split("\\.", 0)[3];
-		String sender = encryptedMessage.split("\\.", 0)[4];
+     char someChar = '.';
+        int count = 0;
+          
+        for (int i = 0; i < encryptedMessage.length(); i++) {
+            if (encryptedMessage.charAt(i) == someChar) {
+                count++;
+            }
+        }
+    	if(count == 5){
+    	 	   if(!encryptedMessage.endsWith(".txt")){
+    		   	String marrsi = encryptedMessage.split("\\.", 0)[0];
+    			String mesazhi = encryptedMessage.split("\\.", 0)[3];
+    			String sender = encryptedMessage.split("\\.", 0)[4];
 
-		byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
-		String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
+    			byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
+    			String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
 
-		byte[] dekodimiSender = Base64.getDecoder().decode(sender);
-		String Sender = new String(dekodimiSender, StandardCharsets.UTF_8.name());
-			       
-		Metodat td= new Metodat();
-		String decrypted = td.decrypt(mesazhi);
+    			byte[] dekodimiSender = Base64.getDecoder().decode(sender);
+    			String Sender = new String(dekodimiSender, StandardCharsets.UTF_8.name());
+    				       
+    			Metodat td= new Metodat();
+    			String decrypted = td.decrypt(mesazhi);
 
-		Boolean existsPublik = FileExists(Marrsi, Path, ".pub.xml");
-		Boolean existsPrivat = FileExists(Marrsi, Path, ".xml");
-		if(existsPrivat) {
-		    if(existsPublik) {
-			String contentsPublic = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/keys/" + Marrsi + ".pub.xml"
-							)).collect(Collectors.joining("\n")); 
-			String modulus = contentsPublic.split("<string>")[2].split("</string>")[0];
-			String publicExponent = contentsPublic.split("<string>")[1].split("</string>")[0];
-					
-			String contentsPrivate = Files.lines(Paths.get("C:/Users/Uran////Desktop/Projekti Siguri/keys/" + Marrsi + ".xml"
-								)).collect(Collectors.joining("\n")); 
-			String privateExponent = contentsPrivate.split("<string>")[3].split("</string>")[0];
-								
-			BigInteger e = new BigInteger(publicExponent);
-			BigInteger m = new BigInteger(modulus);
-			BigInteger d = new BigInteger(privateExponent);
-					    		
-			byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
-			boolean on = validateSignBySoft(bigIntegerToPublicKey(e,m), a, "abc".getBytes());
-					
-			if(on == true) {
-				System.out.println("Marresi: " + Marrsi);
-				System.out.println("Mesazhi: " + decrypted);
-				System.out.println("Sender: " + Sender);
-				System.out.println("Nenshkrimi: Valid");
-			}
-			else {
-				System.out.println("Marresi: " + Marrsi);
-				System.out.println("Mesazhi: " + decrypted);
-				System.out.println("Sender: " + Sender);
-				System.out.println("Nenshkrimi: mungon celesi publik '" + Marrsi + "'");
-			}
-		    }
-		    else {
-				System.out.println("Marresi: " + Marrsi);
-				System.out.println("Mesazhi: " + decrypted);
-				System.out.println("Sender: " + Sender);
-				System.out.println("Nenshkrimi: mungon celesi publik '" + Marrsi + "'");
-		    }
-		}
-		else
-			System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
-		}	    	
-		else{
-			String contents = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////" +
-								encryptedMessage)).collect(Collectors.joining("\n"));
-			contents = contents.split("<string>")[1].split("</string>")[0];
-			String marrsi = contents.split("\\.", 0)[0];
-		        String mesazhi = contents.split("\\.", 0)[3];
-		        ReturnMessage(marrsi,mesazhi);
-	 	}
-    }
-}
+    			Boolean existsPublik = FileExists(Marrsi, Path, ".pub.xml");
+    			Boolean existsPrivat = FileExists(Marrsi, Path, ".xml");
+    			if(existsPrivat) {
+    			    if(existsPublik) {
+    					String contentsPublic = Files.lines(Paths.get("C:/Users/Uran/Desktop/Projekti Siguri/keys/" + Marrsi + ".pub.xml"
+    									)).collect(Collectors.joining("\n")); 
+    					String modulus = contentsPublic.split("<string>")[2].split("</string>")[0];
+    					String publicExponent = contentsPublic.split("<string>")[1].split("</string>")[0];
+    										
+    					BigInteger e = new BigInteger(publicExponent);
+    					BigInteger m = new BigInteger(modulus);
+    							    		
+    					byte[] a = Base64.getDecoder().decode(encryptedMessage.split("\\.", 0)[5]);
+    					if(a.length == 256){
+
+	    					boolean on = validateSignBySoft(bigIntegerToPublicKey(e,m), a, decrypted.getBytes());
+	    					
+	    					System.out.println("Marresi: " + Marrsi);
+	    					System.out.println("Mesazhi: " + decrypted);
+	    					System.out.println("Sender: " + Sender);	
+	    					if(on == true) {	
+	    						System.out.println("Nenshkrimi: Valid");
+	    					}
+	    					else {
+	    						System.out.println("Nenshkrimi: mungon celesi publik '" + Marrsi + "'");
+	    					}
+	    				}
+	    				else{
+	    					System.out.println("Keni shenuar gabim pjesen e fundit te celesit");
+	    				}
+    			    }
+    			    else {
+    					System.out.println("Nenshkrimi: mungon celesi publik '" + Marrsi + "'");
+    			    }
+    			}
+    			else
+    				System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
+    			}	    	
+    		}
+    		else if(count == 3){
+    			if(!encryptedMessage.endsWith(".txt")){
+    					String marrsi = encryptedMessage.split("\\.", 0)[0];
+    		            String mesazhi = encryptedMessage.split("\\.", 0)[3];
+
+    		            byte[] dekodimiCelsit = Base64.getDecoder().decode(marrsi);
+    			        String Marrsi = new String(dekodimiCelsit, StandardCharsets.UTF_8.name());	
+    			       
+    			        Metodat td= new Metodat();
+    			        String decrypted = td.decrypt(mesazhi);
+
+    			        Boolean exist = FileExists(Marrsi, Path, ".xml");
+    			    if(exist) {
+    			        System.out.println("\nMarresi: " + Marrsi);
+    			        System.out.println("Mesazhi: " + decrypted);
+    			     	}
+    			    else
+    			     	System.out.println("Gabim: Celesi privat 'keys/" + Marrsi +".xml' nuk ekziston");
+
+    			}
+    			else{
+    				String contents = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////" +
+    									encryptedMessage)).collect(Collectors.joining("\n"));
+    				contents = contents.split("<string>")[1].split("</string>")[0];
+    				String marrsi = contents.split("\\.", 0)[0];
+    			    String mesazhi = contents.split("\\.", 0)[3];
+    			    ReturnMessage(marrsi,mesazhi);
+    		 	}
+    		}
+    		else {
+		     	System.out.println("Keni shenuar gabim encrypted message.");
+    		}
+			
