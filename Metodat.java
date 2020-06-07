@@ -233,11 +233,26 @@ class Metodat {
 	   Boolean existsPrivat = FileExists(name, PathKeys, ".xml");
 	   Boolean existsPublik = FileExists(name, PathKeys, ".pub.xml");
 	   if(!(existsPrivat && existsPublik)){
-	   	System.out.print("Jepni fjalekalimin: ");
-	   	String password = input.nextLine();	
+	   		  char passwordi[] = null;
+		      try {
+		         passwordi = PasswordField.getPassword(System.in, "Jepni fjalekalimin: ");
+		      } catch(IOException ioe) {
+		         ioe.printStackTrace();
+		      }
+		     
+
+		String password = String.valueOf(passwordi);
+
+		
 	   if(password.length() >= 6 && checkString(password) == true) {
-	   	System.out.print("Perserit fjalekalimin: ");
-		String repaitPassword = input.nextLine();
+	   	char repaitPasswordi[] = null;
+		      try {
+		         repaitPasswordi = PasswordField.getPassword(System.in, "Perserit fjalekalimin: ");
+		      } catch(IOException ioe) {
+		         ioe.printStackTrace();
+		      }
+
+		String repaitPassword = String.valueOf(repaitPasswordi);
 	   if(!password.equals(repaitPassword)) {
 		System.out.println("Gabim: Fjalekalimet nuk perputhen.");
 	   }
@@ -352,8 +367,15 @@ class Metodat {
 			    		
 		byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
 
-		System.out.print("Jepni fjalekalimin: ");
-		String pass = input.nextLine();
+		char passwordi[] = null;
+		      try {
+		         passwordi = PasswordField.getPassword(System.in, "Jepni fjalekalimin: ");
+		      } catch(IOException ioe) {
+		         ioe.printStackTrace();
+		      }
+		     
+
+		String pass = String.valueOf(passwordi);
 			
 		String contents = Files.lines(Paths.get(PathPassword + name + "Pas.txt")).collect(Collectors.joining("\n"));
 		String generatedPassword = null;
