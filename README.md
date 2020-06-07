@@ -173,6 +173,7 @@ REFERENCAT:
 1. Kjo komandë jep mundësinë për përdoruesin të vendosë një fjalëkalim që ti enkriptojë të dhënat!
 
 
+
 ❂ Komanda delete-user:
 
 1. Largon(fshinë) çelësat publik dhe privat në bazë të emrit të përdoruesit!
@@ -199,6 +200,65 @@ REFERENCAT:
 
 
 
+Ekzekutimi i Programit : 
+
+✺ HAPI 1:
+
+➢ Kompailimi në cmd(Command Prompt) apo Terminal(Sisteme Operative → Linux apo MacOS) duke përdorur komandën:  javac Main.java
+  (Sigurohuni të jeni në pathin e duhur e.x -> Desktop)!
+
+✺ HAPI 2:
+
+➢ Për të ekzekutuar njërin nga Funksionet e programit duhet t'i shkruani komandat në formatin përshembull:
+
+➤ Për komandën create-user:
+
+         ✸ java Main create-user <name>
+
+<img width="972" alt="create" src="https://user-images.githubusercontent.com/61246827/83980281-a885c300-a914-11ea-8f17-54a38527ba0b.png">
+
+
+➤ Për komandën delete-user:
+
+         ✸ java Main delete-user <name>
+
+<img width="971" alt="delete" src="https://user-images.githubusercontent.com/61246827/83980282-aae81d00-a914-11ea-929a-b77555a8af1b.png">
+
+
+➤ Për komandën login:
+   
+         ✸ java Main login <name>
+
+<img width="971" alt="login" src="https://user-images.githubusercontent.com/61246827/83980284-ad4a7700-a914-11ea-97cc-9e733bce5a51.png">
+
+
+
+➤ Për komandën status:
+   
+         ✸ java Main login <Token>
+         
+<img width="968" alt="status" src="https://user-images.githubusercontent.com/61246827/83980287-b3405800-a914-11ea-91a5-6f924428568a.png">
+
+
+
+➤ Për komandën write-message:
+   
+         ✸ java Main write-message <name> <message> <sender> <Token>
+
+<img width="968" alt="write" src="https://user-images.githubusercontent.com/61246827/83980289-b50a1b80-a914-11ea-9453-3606ae2d6496.png">
+
+
+
+➤ Për komandën read-message:
+     
+         ✸ java Main read-message <Token>
+
+
+<img width="965" alt="read" src="https://user-images.githubusercontent.com/61246827/83980290-b8050c00-a914-11ea-9025-a042a28a65b8.png">
+
+
+    
+        
 
 REFERENCAT:
   
