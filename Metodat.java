@@ -378,7 +378,7 @@ class Metodat {
 		if(generatedPassword.equals(contents)  && existsPas) {
 			Calendar calendar = Calendar.getInstance();
       			//Returns current time in millis
-      			long timeMilli2 = calendar.getTimeInMillis() + 60000;//20 minuta
+      			long timeMilli2 = calendar.getTimeInMillis() + 1200000;//20 minuta
       			String koha = String.valueOf(timeMilli2); 
 
 			FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/" + name + ".txt");
