@@ -167,7 +167,37 @@ REFERENCAT:
 
   
                                                 Faza e tretë
-                                             
+
+❂ Komanda create-user:
+
+1. Kjo komandë jep mundësinë për përdoruesin të vendosë një fjalëkalim që ti enkriptojë të dhënat!
+
+
+❂ Komanda delete-user:
+
+1. Largon(fshinë) çelësat publik dhe privat në bazë të emrit të përdoruesit!
+
+
+❂ Komanda login:
+
+1. Kjo komandë mundëson që përmes fjalëkalimit përdoruesi të krijoj një çelës Indentifikues!
+
+
+❂ Komanda status:
+
+1. Kjo komandë i mundëson shfrytëzuesit që përmes Tokenit(çelës Indentifikues) të tregojë se a është valid ai përdorues!
+
+
+❂ Komanda write-message:
+
+1. Kjo komandë mundëson shkrimin e një mesazhi të enkriptuar për një shfrytëzues përmes Tokenit.
+
+
+❂ Komanda read-message:
+
+1. Përmes Tokenit mund të shfaqë marrësin, mesazhin dhe validimin e tij!
+
+
 
 
 REFERENCAT:
