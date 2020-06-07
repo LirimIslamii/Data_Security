@@ -336,7 +336,7 @@ class Metodat {
 		System.out.println("Gabim: Celesi '" + name + "' nuk ekziston.");
     }
 		
-    public void Login(String name) throws Exception{
+     public void Login(String name) throws Exception{
 	   Boolean exists = FileExists(name, Path, ".xml");
 	   if(exists){				
 	   	String contentsPrivate = Files.lines(Paths.get("C:////Users////Uran////Desktop////Projekti Siguri////keys////" + name + ".xml"
@@ -348,7 +348,6 @@ class Metodat {
 		BigInteger d = new BigInteger(privateExponent);
 			    		
 		byte[] a = signBySoft(bigIntegerToPrivateKey(d,m), "abc".getBytes());
-		String tokeni = a.toString();
 
 		System.out.print("Jepni fjalekalimin: ");
 		String pass = input.nextLine();
@@ -380,7 +379,9 @@ class Metodat {
       			//Returns current time in millis
       			long timeMilli2 = calendar.getTimeInMillis() + 1200000;//20 minuta
       			String koha = String.valueOf(timeMilli2); 
-
+      			
+      		String tokeni = Base64.getEncoder().encodeToString(a);
+      		
 			FileWriter fileWriter = new FileWriter("C:/Users/Uran/Desktop/Projekti Siguri/tokenat/" + name + ".txt");
 			fileWriter.write(tokeni);
 			fileWriter.close();
