@@ -1,8 +1,8 @@
 import javax.crypto.Cipher;  
 
 public class Main {
-    static Cipher cipher;  
-  public static void main(String[] args)throws Exception {
+        static Cipher cipher;  
+    public static void main(String[] args)throws Exception {
         Morse_Code M = new Morse_Code();
         Tap_Code T = new Tap_Code();
         Four_Code F = new Four_Code();
@@ -61,28 +61,22 @@ public class Main {
         }
         else if(args[0].equals("delete-user") && args.length == 2) 
                 K.Delete(args[1]);
-        else if(args[0].equals("export-key") && args.length == 3) {
+        else if(args[0].equals("export-key") && args.length == 3) 
                 K.Export(args[1], args[2]);
-        }
-        else if(args[0].equals("export-key") && args.length == 4) {
+        else if(args[0].equals("export-key") && args.length == 4) 
                 K.Export(args[1], args[2],args[3]);
-        }
         else if(args[0].equals("import-key") && args.length == 3){
             if(args[2].startsWith("https") || args[2].startsWith("http"))
                 K.Pastebin(args[1], args[2]);
             else
                 K.Import(args[1],args[2]);
         }
-      
-        else if(args[0].equals("write-message") && args.length == 5) {
+        else if(args[0].equals("write-message") && args.length == 5) 
                 K.Write(args[1], args[2],args[3],args[4]);
-        }
-        else if(args[0].equals("write-message") && args.length == 3) {
-            K.Write(args[1], args[2]);
-        }
+        else if(args[0].equals("write-message") && args.length == 3) 
+                K.Write(args[1], args[2]);
         else if(args[0].equals("write-message") && args.length == 4) 
                 K.Write(args[1], args[2],args[3]);
-
         else if(args[0].equals("read-message") && args.length == 2)
             K.Read_Message(args[1]);
         else if(args[0].equals("login") && args.length == 2)
@@ -104,3 +98,6 @@ public class Main {
         }
     }
 }
+
+
+
