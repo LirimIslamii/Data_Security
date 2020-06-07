@@ -1,18 +1,4 @@
-import javax.sound.sampled.*;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import java.util.Base64;    
 import javax.crypto.Cipher;  
-import javax.crypto.KeyGenerator;   
-import javax.crypto.SecretKey; 
 
 public class Main {
     static Cipher cipher;  
@@ -21,11 +7,7 @@ public class Main {
         Tap_Code T = new Tap_Code();
         Four_Code F = new Four_Code();
         Metodat K = new Metodat();
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-        keyGenerator.init(56);
-        SecretKey secretKey = keyGenerator.generateKey();
 
-        cipher = Cipher.getInstance("DES"); 
         K.writeToFile("RSA/publicKey", K.getPublicKey().getEncoded());
         K.writeToFile("RSA/privateKey", K.getPrivateKey().getEncoded());
 
