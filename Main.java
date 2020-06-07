@@ -93,7 +93,11 @@ public class Main {
                                       + "\t6.Komanda export-key <public | private> <name> [file]\n"
                                       + "\t7.Komanda import-key <name> <path>\n"
                                       + "\t8.Komanda write-message <name> <message> [file]\n"
-                                      + "\t9.Komanda read-message <encrypted-message>\n");
+                                      + "\t9.Komanda read-message <encrypted-message>\n"
+                                      + "\t10.Komanda login <name>\n"
+                                      + "\t11.Komanda status <Token>\n"
+                                      + "\t11.Komanda write-message <name> <message> <sender> <Token>\n"
+                                      + "\t12.Komanda read-message <Token>\n");
                 System.exit(0);
         }
     }
